@@ -3,42 +3,20 @@ import RPi.GPIO as gpio
 import time
 from threading import Thread
 import classZielzustand
+import Konstanten
 
 # Instanzmethode bauen, die servos von außerhalb der Klasse steuert: setWinkel oder so nennen, Wert zwischen 0 und 180 geben und dutycycle umrechnen in Grad
 
 # Jeder Servo eigenen Thread
-
-gpio.setwarnings(False) #Wenn Warnungen an kommt ständig die Meldung, dass die Channels schon verwendet werden -> False
- # !!!!Achtung!!!! GPIO Mode kann entweder BOARD oder BCM sein. BCM heißt, dass die GPIO Nummern gleich den GPIO Bezeichnungen sind, BOARD heißt, dass die GPIO am Raspberry PI selbst abgezählt sind
-gpio.setmode(gpio.BOARD)
-FREQUENZ = 50
-
-MOTOREN_und_PINS = {
-    "ellbogen_servo1" : 22,
-    "ellbogen_servo2" : 0,
-    "schulter_servo1" : 0,
-    "schulter_servo2": 0,
-    "kopf_servo": 0,
-    "kopf_linear" : 0,
-    "helm_servo" : 0}
-
-MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = { # Bei Test mit zwei versch. Servos fiel auf, dass sie unterschiedliche DC benötigen, um die vollen 180° anzufahren
-    "ellbogen_servo1" : (2.5,12.5), # falls immer die gleichen Servos verwendet werden, dann kann das Dic evtl. aufgelöst werden
-    "ellbogen_servo2" : (2.5,12.5),
-    "schulter_servo1" : (2.5,12.5),
-    "schulter_servo2": (2.5,12.5),
-    "kopf_servo": (2.5,12.5),
-    "kopf_linear" : (2.5,12.5),
-    "helm_servo" : (2.5,12.5)}
 
 
 
 class Servo():   
     def __init__(self, servoname):
         self.servoname = servoname
-        servoPIN = MOTOREN_und_PINS.get(servoname)
+        servoPIN = Konstanten.MOTOREN_und_PINS.get(servoname)
         gpio.setup(servoPIN, gpio.OUT)
-        self.motor = gpio.PWM(servoPIN, FREQUENZ)
+        self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)
         self.motor.start(0)
         self.thread = Thread(target = self.erfuelle_zustand)
 
@@ -47,10 +25,9 @@ class Servo():
         dc = self.berechneDutyCycle_aus_gradzahl(self.gradzahl)
         self.motor.ChangeDutyCycle(dc)
         
-        
     def berechneDutyCycle_aus_gradzahl(self, gradzahl):
-        min_dc = MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[0]  # entspricht 0°
-        max_dc = MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[1]  # entspricht 180°
+        min_dc = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[0]  # entspricht 0°
+        max_dc = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[1]  # entspricht 180°
     
         delta_dc = max_dc - min_dc
         dc_pro_grad = delta_dc/180

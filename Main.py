@@ -6,19 +6,23 @@ import class_led
 #import xbox
 import class_servo
 import classZielzustand
-import class_Action
+import class_Zustandsupdate
 
 
+def allgemeines_setup():
+    gpio.setmode(gpio.BOARD) # !!!!Achtung!!!! GPIO Mode kann entweder BOARD oder BCM sein. BCM heißt, dass die GPIO Nummern gleich den GPIO Bezeichnungen sind, BOARD heißt, dass die GPIO am Raspberry PI selbst abgezählt sind
+    gpio.setwarnings(False) #Wenn Warnungen an kommt ständig die Meldung, dass die Channels schon verwendet werden -> False
+    
 if __name__=="__main__":
-    #joy = xbox.Joystick()
-    #zielzustandsobjekt = class_Zielzustand.Zielzustand()
+    allgemeines_setup()
     led = class_led.Led()
     ellbogen_servo1 = class_servo.Servo("ellbogen_servo1")
-    led.start()
-    action = class_Action.Action()
+    #led.start()
+    zustand_update = class_Zustandsupdate.Zustandsupdate()
     
     try:
-        action.update_zielzustand()
+        zustand_update.update_zielzustand()
+        
             
             
 #     while not joy.Back():
