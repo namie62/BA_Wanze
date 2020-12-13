@@ -9,14 +9,14 @@ import class_servo
 if __name__=="__main__":
     joy = xbox.Joystick()
     led = class_led.Led()
-    servo1 = class_servo.Servo()
+    ellbogen_servo1 = class_servo.Servo("ellbogen_servo1")
     led.start()
     while not joy.Back():
         try:
             if joy.A():
                 led.stelle_farbe_ein("gruen")
             if joy.B():
-                led.stelle_farbe_ein("rot")
+                ellbogen_servo1.bewegung_um_Grad(90)
             if joy.Y():
                 led.stelle_farbe_ein("orange")
             if joy.X():
@@ -32,18 +32,18 @@ if __name__=="__main__":
             if joy.rightBumper():
                 xl,yl = joy.leftStick()
                 xr,yr = joy.rightStick()
-                servo1.start()
+                ellbogen_servo1.start()
                 
             
             if joy.leftBumper():
                 xl,yl = joy.leftStick()
                 xr,yr = joy.rightStick()
-                servo1.jip()
+                ellbogen_servo1.jip()
                 
             if joy.Start():
                 gpio.cleanup()
                 joy.close()
-                servo1.stop()
+                ellbogen_servo1.stop()
                     
             #if bla bla break
                 
