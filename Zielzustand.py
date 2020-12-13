@@ -3,7 +3,7 @@
 #hier können beliebige Namen für Zielzustände gesetzt werden
 
 
-zielzustaende = {
+ZIELZUSTAENDE = {
     "Notaus" : False, # direkt als Attribute: self.Notaus = bla bla
     "Nacken" : "mittig", #links, rechts
     "Kopf" : "ausgefahren", # eingefahren 

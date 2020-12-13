@@ -2,11 +2,10 @@
 #-*- coding: utf-8 -*-
 import time
 import RPi.GPIO as gpio
-import class_led
-#import xbox
-import class_servo
-import classZielzustand
+import class_Led
+import class_Servo
 import class_Zustandsupdate
+
 
 
 def allgemeines_setup():
@@ -15,8 +14,8 @@ def allgemeines_setup():
     
 if __name__=="__main__":
     allgemeines_setup()
-    led = class_led.Led()
-    ellbogen_servo1 = class_servo.Servo("ellbogen_servo1")
+    led = class_Led.Led()
+    ellbogen_servo1 = class_Servo.Servo("ellbogen_servo1")
     #led.start()
     zustand_update = class_Zustandsupdate.Zustandsupdate()
     

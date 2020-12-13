@@ -2,7 +2,7 @@
 import RPi.GPIO as gpio
 import time
 from threading import Thread
-import classZielzustand
+import Zielzustand
 import Konstanten
 
 # Instanzmethode bauen, die servos von außerhalb der Klasse steuert: setWinkel oder so nennen, Wert zwischen 0 und 180 geben und dutycycle umrechnen in Grad
