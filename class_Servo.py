@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
 import RPi.GPIO as gpio
 import time
-from threading import Thread
 import Zielzustand
 import Konstanten
 
@@ -16,7 +15,6 @@ class Servo():
         gpio.setup(servoPIN, gpio.OUT)
         self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)
         self.motor.start(0)
-        self.thread = Thread(target = self.erfuelle_zustand)
 
     def bewegung_um_Grad(self,gradzahl):
         self.gradzahl = gradzahl
@@ -33,9 +31,6 @@ class Servo():
         return dc
         
 
-    def start(self):
-        self.thread.start()
-        
         # In Start eigenen Thread self.thread und in Init initalisieren und in start starten
         # Der Thread hat endlosschleife, die einmal pro x ms schaut wo sie ist (Winkel) und was der Winkel ist, wo er hin soll (kommt von außen)
         # dann schauen was man tun muss, um sich da hin zu bewegen, wo er hinwill

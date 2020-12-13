@@ -13,15 +13,16 @@ class Zustandsupdate():
         self.thread.start()
     
         
-    def update_zielzustand(self):
+    def update_zielzustand(self): # schauen, dass evtl nur dann Aktion ausgelöst wird, wenn alter Zielzustand != neuer Zielzustand
         while True:
             if self.joy.A():
-                print("update", Zielzustand.ZIELZUSTAENDE)
+                #print("update", Zielzustand.ZIELZUSTAENDE)
                 Zielzustand.ZIELZUSTAENDE['Nacken'] = "ganz nach links gedreht"
                 Zielzustand.ZIELZUSTAENDE['Kopf'] = "links"
             if self.joy.B():
                 Zielzustand.ZIELZUSTAENDE['Nacken'] = "mittig"
                 Zielzustand.ZIELZUSTAENDE['Kopf'] = "rechts"
+
                 
             time.sleep(0.1)
                     

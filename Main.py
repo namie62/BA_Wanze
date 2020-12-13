@@ -15,8 +15,8 @@ def allgemeines_setup():
 if __name__=="__main__":
     try:
         allgemeines_setup()
-        led = class_Led.Led()
-        ellbogen_servo1 = class_Servo.Servo("ellbogen_servo1")
+        #led = class_Led.Led()
+        #ellbogen_servo1 = class_Servo.Servo("ellbogen_servo1") #gehört eig noch in action
         zustand_update = class_Zustandsupdate.Zustandsupdate()
         action = class_Action.Action()
         
