@@ -8,8 +8,8 @@ import class_servo
 
 if __name__=="__main__":
     joy = xbox.Joystick()
-    led = class_led.led()
-    servo1 = class_servo.servo()
+    led = class_led.Led()
+    servo1 = class_servo.Servo()
     led.start()
     while not joy.Back():
         try:
