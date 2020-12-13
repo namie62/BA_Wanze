@@ -9,8 +9,6 @@ import Konstanten
 
 # Jeder Servo eigenen Thread
 
-
-
 class Servo():   
     def __init__(self, servoname):
         self.servoname = servoname
@@ -35,7 +33,6 @@ class Servo():
         return dc
         
 
-
     def start(self):
         self.thread.start()
         
@@ -57,19 +54,7 @@ class Servo():
         #time.sleep(0.5)
 #         p.ChangeDutyCycle(7.5) # entspricht 90°
 #         time.sleep(0.5)
-
-    def erfuelle_zustand(self):
-        while True:
-            # schaue wo du bist und wo du hin willst
-            #print("ich bin servo", zielzustand.Zielzustaende)
-            self.bewegung_um_Grad(180)
-            
-            
-            
-        
-
-
-
+                  
 
     def jip(self):
         self.motor.ChangeDutyCycle(2.5) # entspricht 0°
