@@ -1,13 +1,10 @@
 #-*- coding: utf-8 -*-
-import xbox
-import RPi.GPIO as gpio
 
 
-class zielzustand():
-    def __init__(self):
-        self.joy = xbox.Joystick()
+# class Zielzustand():
+#     def __init__(self):
         #default Werte:
-        self.zielzustaende = {"Notaus" : False, # direkt als Attribute: self.Notaus = bla bla 
+zielzustaende = {"Notaus" : False, # direkt als Attribute: self.Notaus = bla bla 
                               "Kopf" : "gerade",
                               "Led" : "aus",
                               "Arm_rechts": "ausgestreckt", # Zu ungenau
@@ -15,4 +12,4 @@ class zielzustand():
                               # usw.
                               }
         
-        
+    

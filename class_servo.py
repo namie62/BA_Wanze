@@ -2,6 +2,7 @@
 import RPi.GPIO as gpio
 import time
 from threading import Thread
+import classZielzustand
 
 # Instanzmethode bauen, die servos von außerhalb der Klasse steuert: setWinkel oder so nennen, Wert zwischen 0 und 180 geben und dutycycle umrechnen in Grad
 
@@ -39,10 +40,11 @@ class Servo():
         gpio.setup(servoPIN, gpio.OUT)
         self.motor = gpio.PWM(servoPIN, FREQUENZ)
         self.motor.start(0)
-        self.thread = Thread(target = self.motorzustand)
+        self.thread = Thread(target = self.erfuelle_zustand)
 
     def bewegung_um_Grad(self,gradzahl):
-        dc = self.berechneDutyCycle_aus_gradzahl(gradzahl)
+        self.gradzahl = gradzahl
+        dc = self.berechneDutyCycle_aus_gradzahl(self.gradzahl)
         self.motor.ChangeDutyCycle(dc)
         
         
@@ -56,10 +58,9 @@ class Servo():
         return dc
         
 
+
     def start(self):
         self.thread.start()
-        
-        
         
         # In Start eigenen Thread self.thread und in Init initalisieren und in start starten
         # Der Thread hat endlosschleife, die einmal pro x ms schaut wo sie ist (Winkel) und was der Winkel ist, wo er hin soll (kommt von außen)
@@ -74,19 +75,21 @@ class Servo():
         # val ist Wert von Joystick, zwischen 0 und 1
         # 1 entspricht 12.5 und 0 enstpricht 2.5 ->
          # entspricht 0°
-        time.sleep(0.5) # Als Kehrwert von Update Frequenz
-        self.motor.ChangeDutyCycle(12.5) # aus Update Frequenz und Winkel berechnen
+        #time.sleep(0.5) # Als Kehrwert von Update Frequenz
+        #self.motor.ChangeDutyCycle(12.5) # aus Update Frequenz und Winkel berechnen
         #time.sleep(0.5)
 #         p.ChangeDutyCycle(7.5) # entspricht 90°
 #         time.sleep(0.5)
 
-    def motorzustand(self):
+    def erfuelle_zustand(self):
         while True:
-            print("hi")
+            # schaue wo du bist und wo du hin willst
+            #print("ich bin servo", zielzustand.Zielzustaende)
+            self.bewegung_um_Grad(180)
+            
             
             
         
-
 
 
 
