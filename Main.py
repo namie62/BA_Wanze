@@ -18,14 +18,13 @@ if __name__=="__main__":
         allgemeines_setup()
         led = class_Led.Led()
         zustand_update = class_Zustandsupdate.Zustandsupdate()
-        ellbogen_servo1 = class_Servo.Servo("ellbogen_servo1") #gehört eig noch in action
+        ellbogen_servo1 = class_Servo.Servo("ellbogen_servo1")
         
         while True:
+            
             zustand_update.update_zielzustand()
     
             
-            
-
     except KeyboardInterrupt:  #finally
         gpio.cleanup()
                 

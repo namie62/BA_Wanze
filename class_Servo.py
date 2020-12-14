@@ -4,49 +4,29 @@ import time
 import Zielzustand
 import Konstanten
 from threading import Thread
-# Instanzmethode bauen, die servos von außerhalb der Klasse steuert: setWinkel oder so nennen, Wert zwischen 0 und 180 geben und dutycycle umrechnen in Grad
 
-# Jeder Servo eigenen Thread
-
-
-
-
-# ZIELZUSTAENDE = {
-#     "Notaus" : False, # direkt als Attribute: self.Notaus = bla bla
-#     "Nacken" : "mittig", #links, rechts
-#     "Kopf" : "ausgefahren", # eingefahren 
-#     "Led" : "aus", # farben reinschreiben 
-#     "Schulter_rechts": "0", # Gradzahlen, 0 ist unten und dann gehts bis 180 weiter hoch
-#     "Schulter_links" : "0",
-#     "Ellbogen_rechts": "0",
-#     "Ellbogen_links": "0",
-#     "Helm": "0",
-#                               # usw.
-#                               }
 class Servo():   
     def __init__(self, servoname):
         self.servoname = servoname
         servoPIN = Konstanten.MOTOREN_und_PINS.get(servoname)
         gpio.setup(servoPIN, gpio.OUT)
         self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)
-        self.motor.start(0)
+        self.alter_zustand = 0
+        self.motor.start(self.alter_zustand)
         self.thread = Thread(target = self.action)
         self.thread.start()
 
-
     def action(self):
         while True:
-            for i in Zielzustand.ZIELZUSTAENDE:
-                if Zielzustand.ZIELZUSTAENDE.get(i) == Zielzustand.ALTER_ZIELZUSTAND.get(i):
-                    print(Zielzustand.ZIELZUSTAENDE.get(i),"==", Zielzustand.ALTER_ZIELZUSTAND.get(i))
-                   # print("nix verändert")
-                else:
-                    print("hat sich verändert")
-            time.sleep(0.1)
- 
+            self.neuer_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)
+            if self.neuer_zustand == self.alter_zustand:
+                pass
+            else:
+                self.bewegung_um_Grad(self.neuer_zustand)
                 
-
-            
+            self.alter_zustand = self.neuer_zustand
+            time.sleep(0.1)
+          
             
     def bewegung_um_Grad(self,gradzahl):
         self.gradzahl = gradzahl
@@ -85,8 +65,6 @@ class Servo():
 
     def jip(self):
         self.motor.ChangeDutyCycle(2.5) # entspricht 0°
-        
-        
         time.sleep(0.2) 
         self.motor.ChangeDutyCycle(3) # entspricht 180°
         time.sleep(0.2)
