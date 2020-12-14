@@ -6,7 +6,6 @@ import Konstanten
 class Led():
     def __init__(self):
     # Initialisierung der Pins, bei anderen Pins einfach die Pin-Nummer ändern
-
         self.pwm_objekte_led = self.setupleds(Konstanten.LED_FREQUENZ)
     
     

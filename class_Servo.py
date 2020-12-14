@@ -3,11 +3,26 @@ import RPi.GPIO as gpio
 import time
 import Zielzustand
 import Konstanten
-
+from threading import Thread
 # Instanzmethode bauen, die servos von außerhalb der Klasse steuert: setWinkel oder so nennen, Wert zwischen 0 und 180 geben und dutycycle umrechnen in Grad
 
 # Jeder Servo eigenen Thread
 
+
+
+
+# ZIELZUSTAENDE = {
+#     "Notaus" : False, # direkt als Attribute: self.Notaus = bla bla
+#     "Nacken" : "mittig", #links, rechts
+#     "Kopf" : "ausgefahren", # eingefahren 
+#     "Led" : "aus", # farben reinschreiben 
+#     "Schulter_rechts": "0", # Gradzahlen, 0 ist unten und dann gehts bis 180 weiter hoch
+#     "Schulter_links" : "0",
+#     "Ellbogen_rechts": "0",
+#     "Ellbogen_links": "0",
+#     "Helm": "0",
+#                               # usw.
+#                               }
 class Servo():   
     def __init__(self, servoname):
         self.servoname = servoname
@@ -15,7 +30,24 @@ class Servo():
         gpio.setup(servoPIN, gpio.OUT)
         self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)
         self.motor.start(0)
+        self.thread = Thread(target = self.action)
+        self.thread.start()
 
+
+    def action(self):
+        while True:
+            for i in Zielzustand.ZIELZUSTAENDE:
+                if Zielzustand.ZIELZUSTAENDE.get(i) == Zielzustand.ALTER_ZIELZUSTAND.get(i):
+                    print(Zielzustand.ZIELZUSTAENDE.get(i),"==", Zielzustand.ALTER_ZIELZUSTAND.get(i))
+                   # print("nix verändert")
+                else:
+                    print("hat sich verändert")
+            time.sleep(0.1)
+ 
+                
+
+            
+            
     def bewegung_um_Grad(self,gradzahl):
         self.gradzahl = gradzahl
         dc = self.berechneDutyCycle_aus_gradzahl(self.gradzahl)

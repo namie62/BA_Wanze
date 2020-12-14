@@ -7,24 +7,28 @@ import time
 
 class Zustandsupdate():
     def __init__(self):
-       # self.zielzustandsobjekt = zielzustandsobjekt
         self.joy = xbox.Joystick()
-        self.thread = Thread(target = self.update_zielzustand)
-        self.thread.start()
-    
-        
+  
     def update_zielzustand(self): # schauen, dass evtl nur dann Aktion ausgelöst wird, wenn alter Zielzustand != neuer Zielzustand
-        while True:
-            if self.joy.A():
-                #print("update", Zielzustand.ZIELZUSTAENDE)
-                Zielzustand.ZIELZUSTAENDE['Nacken'] = "ganz nach links gedreht"
-                Zielzustand.ZIELZUSTAENDE['Kopf'] = "links"
-            if self.joy.B():
-                Zielzustand.ZIELZUSTAENDE['Nacken'] = "mittig"
-                Zielzustand.ZIELZUSTAENDE['Kopf'] = "rechts"
-
+        Zielzustand.ALTER_ZIELZUSTAND = Zielzustand.ZIELZUSTAENDE
+        
+        if self.joy.A():
+            Zielzustand.ZIELZUSTAENDE['Nacken'] = "ganz nach links gedreht"
+            Zielzustand.ZIELZUSTAENDE['Kopf'] = "links"
+        if self.joy.B():
+            Zielzustand.ZIELZUSTAENDE['Nacken'] = "mittig"
+            Zielzustand.ZIELZUSTAENDE['Kopf'] = "rechts"
+        if self.joy.X():
+            Zielzustand.ZIELZUSTAENDE['Nacken'] = "mittig"
+            Zielzustand.ZIELZUSTAENDE['Kopf'] = "rechts"
+        if self.joy.Y():
+            Zielzustand.ZIELZUSTAENDE['Nacken'] = "mittig"
+            Zielzustand.ZIELZUSTAENDE['Kopf'] = "rechts"
                 
-            time.sleep(0.1)
+       # print("update", Zielzustand.ZIELZUSTAENDE)
+        #print("alt", Zielzustand.ALTER_ZIELZUSTAND)
+                
+        time.sleep(0.1)
                     
                 
                 
