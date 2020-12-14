@@ -22,8 +22,7 @@ class Servo():
             if self.neuer_zustand == self.alter_zustand:
                 pass
             else:
-                self.bewegung_um_Grad(self.neuer_zustand)
-                
+                self.bewegung_um_Grad(self.neuer_zustand)     
             self.alter_zustand = self.neuer_zustand
             time.sleep(0.1)
           
