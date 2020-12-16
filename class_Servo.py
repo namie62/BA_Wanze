@@ -9,6 +9,7 @@ class Servo():
     def __init__(self, servoname):
         self.servoname = servoname
         servoPIN = Konstanten.MOTOREN_und_PINS.get(servoname)
+        print(servoPIN)
         gpio.setup(servoPIN, gpio.OUT)
         self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)
         self.alter_zustand = 0
@@ -16,21 +17,23 @@ class Servo():
         self.thread = Thread(target = self.action)
         self.thread.start()
 
+
     def action(self):
         while True:
-            self.neuer_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)
-            if self.neuer_zustand == self.alter_zustand:
+            if Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0] == self.alter_zustand:
                 pass
             else:
-                self.bewegung_um_Grad(self.neuer_zustand)     
-            self.alter_zustand = self.neuer_zustand
+                #self.bewegung_um_Grad()
+                self.bewegung_um_Grad_in_Schritten()
+            self.alter_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
             time.sleep(0.1)
           
             
-    def bewegung_um_Grad(self,gradzahl):
-        self.gradzahl = gradzahl
-        dc = self.berechneDutyCycle_aus_gradzahl(self.gradzahl)
+    def bewegung_um_Grad(self):
+        gradzahl = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
+        dc = self.berechneDutyCycle_aus_gradzahl(gradzahl)
         self.motor.ChangeDutyCycle(dc)
+        
         
     def berechneDutyCycle_aus_gradzahl(self, gradzahl):
         min_dc = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[0]  # entspricht 0°
@@ -41,7 +44,39 @@ class Servo():
         dc = (dc_pro_grad * gradzahl) + min_dc
         return dc
         
+        
+    def berechne_schritthoehe(self, groeßere, kleinere):
+        dc_groeßere = self.berechneDutyCycle_aus_gradzahl(groeßere)
+        dc_kleinere = self.berechneDutyCycle_aus_gradzahl(kleinere)
+        differenz = dc_groeßere - dc_kleinere
+        self.schritthoehe = differenz/Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]
+        
+        
+        
+    def bewegung_um_Grad_in_Schritten(self):
+        if self.alter_zustand < Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]:
+            self.berechne_schritthoehe(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0],self.alter_zustand)
+            stufe = self.berechneDutyCycle_aus_gradzahl(self.alter_zustand) + self.schritthoehe
+            for i in range(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]):
+           # while stufe <= self.berechneDutyCycle_aus_gradzahl(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]):
+                self.motor.ChangeDutyCycle(stufe)
+                print("schritthoehe", self.schritthoehe, "dc", stufe , "schritte", Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1], "anfang und ende", self.alter_zustand, Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
+                stufe += self.schritthoehe
+                time.sleep(0.5)
+        else:
+            self.berechne_schritthoehe(self.alter_zustand,Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
+            stufe = self.berechneDutyCycle_aus_gradzahl(self.alter_zustand) - self.schritthoehe
+            for i in range(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]):
+            #while stufe >= self.berechneDutyCycle_aus_gradzahl(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]):
+                self.motor.ChangeDutyCycle(stufe)
+                print("schritthoehe", self.schritthoehe, "dc", stufe , "schritte", Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1], "anfang und ende", self.alter_zustand, Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
+                stufe -= self.schritthoehe
+                time.sleep(0.5)
 
+            
+
+        
+        
         # In Start eigenen Thread self.thread und in Init initalisieren und in start starten
         # Der Thread hat endlosschleife, die einmal pro x ms schaut wo sie ist (Winkel) und was der Winkel ist, wo er hin soll (kommt von außen)
         # dann schauen was man tun muss, um sich da hin zu bewegen, wo er hinwill

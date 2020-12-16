@@ -4,7 +4,6 @@ import time
 import RPi.GPIO as gpio
 import class_Led
 import class_Servo
-import class_Zustandsupdate
 import Zielzustand
 import xbox
 
@@ -20,20 +19,24 @@ if __name__=="__main__":
         joy = xbox.Joystick()
         allgemeines_setup()
         led = class_Led.Led()
-        ellbogen_servo1 = class_Servo.Servo("ellbogen_servo1")
+        ellbogen_servo1 = class_Servo.Servo("nacken_servo")
         
         while not joy.Back():
             if joy.A():
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = 0  #Gradzahl
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][0] = 180  #Gradzahl
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][1] = 1
                 led.stelle_farbe_ein("gruen")
             if joy.B():
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = 30
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][0] = 30
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][1] = 3
                 led.stelle_farbe_ein("rot")
             if joy.X():
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = 90
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][0] = 90
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][1] = 9
                 led.stelle_farbe_ein("blau")
             if joy.Y():
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = 180
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][0] = 180
+                Zielzustand.ZIELZUSTAENDE['nacken_servo'][1] = 18
                 led.stelle_farbe_ein("orange")
         gpio.cleanup()
         
