@@ -40,11 +40,11 @@ LED_FREQUENZ = 150   #50 ist grenzwertig, dass gedimmte LED nicht flackert, eher
 SERVO_FREQUENZ = 50
 
 MOTOREN_und_PINS = {
-    "ellbogen_servo1" : 22,
+    "ellbogen_servo1" : 0,
     "ellbogen_servo2" : 0,
     "schulter_servo1" : 0,
     "schulter_servo2": 0,
-    "kopf_servo": 0,
+    "nacken_servo": 22,
     "kopf_linear" : 0,
     "helm_servo" : 0}
 
@@ -53,6 +53,6 @@ MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = { # Bei Test mit zwei versch. Servos fiel auf
     "ellbogen_servo2" : (2.5,12.5),
     "schulter_servo1" : (2.5,12.5),
     "schulter_servo2": (2.5,12.5),
-    "kopf_servo": (2.5,12.5),
+    "nacken_servo": (2.5,12.5),
     "kopf_linear" : (2.5,12.5),
     "helm_servo" : (2.5,12.5)}
