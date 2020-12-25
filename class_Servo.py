@@ -24,7 +24,8 @@ class Servo():
                 pass
             else:
                 #self.bewegung_um_Grad()
-                self.bewegung_um_Grad_in_Schritten()
+                #self.bewegung_um_Grad_in_Schritten()
+                self.jip()
             self.alter_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
             time.sleep(0.1)
           
