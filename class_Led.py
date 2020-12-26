@@ -3,6 +3,7 @@ import time
 import RPi.GPIO as gpio
 import Konstanten
 
+
 class Led():
     def __init__(self):
     # Initialisierung der Pins, bei anderen Pins einfach die Pin-Nummer ändern
@@ -16,9 +17,9 @@ class Led():
     # Definiert die GPIOs als Ausgänge und initialisiert und startet die Pulsweitenmodulation
     def setupleds(self, frequenz):  
         pwm_objekte_led = []
-        for i in Konstanten.RGB_PIN_NUMMERN:
-            gpio.setup(Konstanten.RGB_PIN_NUMMERN.get(i), gpio.OUT)
-            pwm_objekt = gpio.PWM(Konstanten.RGB_PIN_NUMMERN.get(i), frequenz)
+        for i in Konstanten.MOTOREN_UND_LED_CHANNELS:
+            gpio.setup(Konstanten.MOTOREN_UND_LED_CHANNELS.get(i), gpio.OUT)
+            pwm_objekt = gpio.PWM(Konstanten.MOTOREN_UND_LED_CHANNELS.get(i), frequenz)
             pwm_objekt.start(0)
             pwm_objekte_led.append(pwm_objekt)
         return pwm_objekte_led

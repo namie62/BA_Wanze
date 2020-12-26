@@ -8,7 +8,7 @@ from threading import Thread
 class Servo():   
     def __init__(self, servoname):
         self.servoname = servoname
-        servoPIN = Konstanten.MOTOREN_und_PINS.get(servoname)
+        servoPIN = Konstanten.MOTOREN_UND_LED_CHANNELS.get(servoname)
         print(servoPIN)
         gpio.setup(servoPIN, gpio.OUT)
         self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)

@@ -5,14 +5,15 @@
 # Vorwiderstände der LEDs im Modell:
 # rot: 270 Ohm    gruen: 220 Ohm     blau: 280 Ohm
 
-RGB_PIN_NUMMERN = {
-    "rot_led1" : 12,
-    "gruen_led1" : 16,
-    "blau_led1" : 18,
-    "rot_led2": 11,
-    "gruen_led2": 13,
-    "blau_led2":15
-    }
+# RGB_PIN_NUMMERN = {
+#     "rot_led1" : 12,
+#     "gruen_led1" : 16,
+#     "blau_led1" : 18,
+#     "rot_led2": 11,
+#     "gruen_led2": 13,
+#     "blau_led2":15
+#     }
+
 
 FARBCODES = {
     "weiß" : (100,100,100),
@@ -39,17 +40,25 @@ LED_FREQUENZ = 150   #50 ist grenzwertig, dass gedimmte LED nicht flackert, eher
 
 SERVO_FREQUENZ = 50
 
-MOTOREN_und_PINS = {
+MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt 16 Stück), an denen die Motoren hängen, kann theoretisch beliebig vergeben werden, 
     "ellbogen_servo1" : 0,
-    "ellbogen_servo2" : 0,
-    "schulter_servo1" : 0,
-    "schulter_servo2": 0,
-    "nacken_servo": 22,
-    "kopf_linear" : 0,
-    "helm_servo" : 0}
+    "ellbogen_servo2" : 2,
+    "schulter_servo1" : 3,
+    "schulter_servo2": 4,
+    "nacken_servo": 5,
+    "kopf_linear" : 6,
+    "helm_servo" : 7,
+     "rot_led1" : 8,
+    "gruen_led1" : 9,
+    "blau_led1" : 10,
+    "rot_led2": 11,
+    "gruen_led2": 12,
+    "blau_led2":13
+    }
+
 
 MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = { # Bei Test mit zwei versch. Servos fiel auf, dass sie unterschiedliche DC benötigen, um die vollen 180° anzufahren
-    "ellbogen_servo1" : (2.5,12.5), # falls immer die gleichen Servos verwendet werden, dann kann das Dic evtl. aufgelöst werden
+    "ellbogen_servo1" : (0.6,2.4), # falls immer die gleichen Servos verwendet werden, dann kann das Dic evtl. aufgelöst werden
     "ellbogen_servo2" : (2.5,12.5),
     "schulter_servo1" : (2.5,12.5),
     "schulter_servo2": (2.5,12.5),
