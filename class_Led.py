@@ -4,6 +4,7 @@ import RPi.GPIO as gpio
 import Konstanten
 
 
+
 class Led():
     def __init__(self):
     # Initialisierung der Pins, bei anderen Pins einfach die Pin-Nummer ändern
