@@ -58,10 +58,10 @@ MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt
 
 
 MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = { # Bei Test mit zwei versch. Servos fiel auf, dass sie unterschiedliche DC benötigen, um die vollen 180° anzufahren
-    "ellbogen_servo1" : (0.6,2.4), # falls immer die gleichen Servos verwendet werden, dann kann das Dic evtl. aufgelöst werden
+    "ellbogen_servo1" : (0.6,2.4), # falls immer die gleichen Servos verwendet werden, dann kann das Dic evtl. aufgelöst werden 
     "ellbogen_servo2" : (2.5,12.5),
     "schulter_servo1" : (2.5,12.5),
-    "schulter_servo2": (2.5,12.5),
+    "schulter_servo2": (2.5,12.5),# ACHTUNG: mit adafruit library eig 0.6 bis 2.5 aber bei 2.5 brummelt der motor, da es ihm scheinbar zu weit ist. Evtl experimentell ausprobieren bei den anderen motoren
     "nacken_servo": (2.5,12.5),
     "kopf_linear" : (2.5,12.5),
     "helm_servo" : (2.5,12.5)}

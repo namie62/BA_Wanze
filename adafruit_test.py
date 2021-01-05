@@ -24,10 +24,9 @@ class Servo_Adafruit():
         self.thread.start()
 
 
-
     def set_servo_pulse(self, pulse):
         pulse_length = 1000000 # 1,000,000 us per second (mikrosekunden sind gemeint)
-        pulse_length /= 50 # 60 Hz
+        pulse_length /= 50 # 50 Hz
         pulse_length /= 4096 # 12 bits of resolution
         pulse *= 1000
         pulse /= pulse_length
@@ -43,12 +42,12 @@ class Servo_Adafruit():
             if Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0] == self.alter_zustand:
                 pass
             else:
-                self.bewegung_um_Grad()
+                #self.bewegung_um_Grad()
                 #self.bewegung_um_Grad_in_Schritten()
                 #self.jip()
-                #self.set_servo_pulse(self.servoStart)
-                #time.sleep(0.5)
-                #self.set_servo_pulse(self.servoEnd)
+                self.set_servo_pulse(self.servoStart)
+                time.sleep(0.5)
+                self.set_servo_pulse(self.servoEnd)
             self.alter_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
             time.sleep(0.1)
             

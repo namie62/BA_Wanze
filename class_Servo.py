@@ -5,6 +5,10 @@ import Zielzustand
 import Konstanten
 from threading import Thread
 
+
+
+
+
 class Servo():   
     def __init__(self, servoname):
         self.servoname = servoname
