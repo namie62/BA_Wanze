@@ -4,22 +4,23 @@ import Adafruit_PCA9685
 import Konstanten
 from threading import Thread
 import Zielzustand
+from threading import Lock
 
 
 class Servo_Adafruit():
     def __init__(self, servoname, pwm):
+        self.servo_lock = Lock()
         self.servoname = servoname
         self.pwm = pwm
         self.channel = Konstanten.MOTOREN_und_LED_CHANNELS.get(servoname)
         print("channel", self.channel)
+        self.servoStart = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(servoname)[0]
         #gpio.setup(servoPIN, gpio.OUT)
         #self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)
-        self.alter_zustand = 0.6
-        #self.motor.start(self.alter_zustand)
-        self.servoStart = 0.6
-        self.servo = self.servoStart
-        self.servoEnd = 2.4
-
+        self.alter_zustand = self.servoStart
+        #self.motor.start(self.alter_zustand) 
+        self.servoEnd = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(servoname)[1]
+        #self.set_servo_pulse(self.alter_zustand)
         self.thread = Thread(target = self.action)
         self.thread.start()
 
@@ -32,9 +33,10 @@ class Servo_Adafruit():
         pulse /= pulse_length
         pulse = round(pulse)
         pulse = int(pulse)
-        print(pulse)
+        print("Puls",pulse)
         self.pwm.set_pwm(self.channel, 0, pulse)
         self.pwm.set_pwm_freq(50)
+        
         
         
     def action(self):
@@ -43,15 +45,14 @@ class Servo_Adafruit():
                 pass
             else:
                 #self.bewegung_um_Grad()
-                #self.bewegung_um_Grad_in_Schritten()
+                self.bewegung_um_Grad_in_Schritten()
                 #self.jip()
-                self.set_servo_pulse(self.servoStart)
-                time.sleep(0.5)
-                self.set_servo_pulse(self.servoEnd)
+                #self.set_servo_pulse(self.servoStart)
+                #time.sleep(0.5)
+                #self.set_servo_pulse(self.servoEnd)
             self.alter_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
-            time.sleep(0.1)
-            
-            
+            time.sleep(0.5)
+        
             
     def bewegung_um_Grad(self):
         gradzahl = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
@@ -61,61 +62,49 @@ class Servo_Adafruit():
         
     def berechneDutyCycle_aus_gradzahl(self, gradzahl):
         min_dc = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[0]  # entspricht 0°
-        max_dc = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[1]  # entspricht 180°
-    
+        max_dc = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[1]  # entspricht maximalenm Winkel
+        
         delta_dc = max_dc - min_dc
-        dc_pro_grad = delta_dc/180
+        dc_pro_grad = delta_dc/180   #hier muss evlt noch eine Variable eingefügt werden, da helmservo nur 145 Grad kann. Wäre aber auch möglich, dass das egal ist, weil die GEadbewegung bei dem nciht so genau sein muss.
         dc = (dc_pro_grad * gradzahl) + min_dc
         return dc
         
         
     def berechne_schritthoehe(self, groeßere, kleinere):
-        dc_groeßere = self.berechneDutyCycle_aus_gradzahl(groeßere)
-        dc_kleinere = self.berechneDutyCycle_aus_gradzahl(kleinere)
-        differenz = dc_groeßere - dc_kleinere
-        self.schritthoehe = differenz/Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]
+        differenz = groeßere - kleinere
+        schrittanzahl = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]
+        self.schritthoehe = differenz/schrittanzahl
         
         
         
     def bewegung_um_Grad_in_Schritten(self):
-        if self.alter_zustand < Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]:
-            self.berechne_schritthoehe(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0],self.alter_zustand)
-            stufe = self.berechneDutyCycle_aus_gradzahl(self.alter_zustand) + self.schritthoehe
-            for i in range(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]):
-           # while stufe <= self.berechneDutyCycle_aus_gradzahl(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]):
-                self.motor.ChangeDutyCycle(stufe)
-                print("schritthoehe", self.schritthoehe, "dc", stufe , "schritte", Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1], "anfang und ende", self.alter_zustand, Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
-                stufe += self.schritthoehe
-                time.sleep(0.5)
-        else:
-            self.berechne_schritthoehe(self.alter_zustand,Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
-            stufe = self.berechneDutyCycle_aus_gradzahl(self.alter_zustand) - self.schritthoehe
-            for i in range(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]):
-            #while stufe >= self.berechneDutyCycle_aus_gradzahl(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]):
-                self.motor.ChangeDutyCycle(stufe)
-                print("schritthoehe", self.schritthoehe, "dc", stufe , "schritte", Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1], "anfang und ende", self.alter_zustand, Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
-                stufe -= self.schritthoehe
-                time.sleep(0.5)
+        neuer_zustand = self.berechneDutyCycle_aus_gradzahl(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
+        with (self.servo_lock ):
+            if self.alter_zustand < neuer_zustand :
+                print(self.alter_zustand, neuer_zustand)
+                self.berechne_schritthoehe(neuer_zustand,self.alter_zustand)
+                stufe = self.alter_zustand 
+                for i in range(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]):
+               # while stufe <= self.berechneDutyCycle_aus_gradzahl(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]):
+                    print("schritthoehe", self.schritthoehe, "dc", stufe , "schritte", Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1], "anfang und ende:", self.alter_zustand, "Gradzahl", Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
+                    stufe += self.schritthoehe
+                    self.set_servo_pulse(stufe)
+                    time.sleep(0.5)
+            else:
+                self.berechne_schritthoehe(self.alter_zustand,Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
+                stufe = self.berechneDutyCycle_aus_gradzahl(self.alter_zustand) - self.schritthoehe
+                for i in range(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1]):
+                #while stufe >= self.berechneDutyCycle_aus_gradzahl(Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]):
+                    print("stufe", stufe)
+                    self.set_servo_pulse(stufe)
+                    print("schritthoehe", self.schritthoehe, "dc", stufe , "schritte", Zielzustand.ZIELZUSTAENDE.get(self.servoname)[1], "anfang und ende", self.alter_zustand, Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0])
+                    stufe -= self.schritthoehe
+    
 
-            
-##################################################
-######### Initialise Start-Up-Positions ##########
-##################################################
-# for x in range(0, 16):
-#     set_servo_pulse(x, servoStart)
-#     time.sleep(2)
-# ##################################################
-# ######### Max-Range for every servo ##############
-# ##################################################
-# for x in range (0, 16):
-#     while (servo < servoEnd):
-#         set_servo_pulse(x, servo0)
-#         servo = (servo + 0.05)
-#         time.sleep(0.04)
-#         time.sleep(1)
-
-
+    
     def stop(self):
-        self.motor.ChangeDutyCycle(0)
+        self.set_servo_pulse(0)
+        #self.pwm.set_pwm_freq(0)
+        
 
 
