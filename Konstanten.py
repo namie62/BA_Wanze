@@ -5,14 +5,6 @@
 # Vorwiderstände der LEDs im Modell:
 # rot: 270 Ohm    gruen: 220 Ohm     blau: 280 Ohm
 
-# RGB_PIN_NUMMERN = {
-#     "rot_led1" : 12,
-#     "gruen_led1" : 16,
-#     "blau_led1" : 18,
-#     "rot_led2": 11,
-#     "gruen_led2": 13,
-#     "blau_led2":15
-#     }
 
 
 FARBCODES = {
@@ -47,15 +39,17 @@ MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt
     "schulter_servo2": 4,
     "nacken_servo": 3,
     "fahrgestell_dc" : 15,
-    "helm_servo" : 5,
-     "rot_led1" : 8,
-    "gruen_led1" : 9,
+    "helm_servo" : 5}
+    
+
+LED_PINS ={
+     "rot_led1" : 7,
+    "gruen_led1" : 8,
     "blau_led1" : 10,
     "rot_led2": 11,
     "gruen_led2": 12,
     "blau_led2":13
     }
-
 
 
 MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = { # Bei Test mit zwei versch. Servos fiel auf, dass sie unterschiedliche DC benötigen, um die vollen 180° anzufahren

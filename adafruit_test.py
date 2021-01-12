@@ -10,10 +10,11 @@ from threading import Lock
 class Servo_Adafruit():
     def __init__(self, servoname, pwm):
         self.servo_lock = Lock()
+        self.action_lock = Lock()
+        self.schreiblock = Lock()
         self.servoname = servoname
         self.pwm = pwm
         self.channel = Konstanten.MOTOREN_und_LED_CHANNELS.get(servoname)
-        print("channel", self.channel)
         self.servoStart = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(servoname)[0]
         #gpio.setup(servoPIN, gpio.OUT)
         #self.motor = gpio.PWM(servoPIN, Konstanten.SERVO_FREQUENZ)
@@ -26,36 +27,38 @@ class Servo_Adafruit():
 
 
     def set_servo_pulse(self, pulse):
-        pulse_length = 1000000 # 1,000,000 us per second (mikrosekunden sind gemeint)
-        pulse_length /= 50 # 50 Hz
-        pulse_length /= 4096 # 12 bits of resolution
-        pulse *= 1000
-        pulse /= pulse_length
-        pulse = round(pulse)
-        pulse = int(pulse)
-        print("Puls",pulse)
-        self.pwm.set_pwm(self.channel, 0, pulse)
-        self.pwm.set_pwm_freq(50)
-        
+        with (self.schreiblock):
+            pulse_length = 1000000 # 1,000,000 us per second (mikrosekunden sind gemeint)
+            pulse_length /= 50 # 50 Hz
+            pulse_length /= 4096 # 12 bits of resolution
+            pulse *= 1000
+            pulse /= pulse_length
+            pulse = round(pulse)
+            pulse = int(pulse)
+            print("Puls",pulse, "Channel", self.channel)
+            self.pwm.set_pwm(self.channel, 0, pulse)
+            self.pwm.set_pwm_freq(50)
+            
         
         
     def action(self):
         while True:
-            if Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0] == self.alter_zustand:
-                pass
-            else:
-                #self.bewegung_um_Grad()
-                self.bewegung_um_Grad_in_Schritten()
-                #self.jip()
-                #self.set_servo_pulse(self.servoStart)
-                #time.sleep(0.5)
-                #self.set_servo_pulse(self.servoEnd)
-            self.alter_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
-            time.sleep(0.5)
+            with (self.action_lock):
+                gradzahl = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0] 
+                if gradzahl == self.alter_zustand:
+                    pass
+                else:
+                    self.bewegung_um_Grad(gradzahl)
+                    #self.bewegung_um_Grad_in_Schritten()
+                    #self.jip()
+                    #self.set_servo_pulse(self.servoStart)
+                    #time.sleep(0.5)
+                    #self.set_servo_pulse(self.servoEnd)
+                self.alter_zustand = gradzahl
+                time.sleep(0.2)
         
             
-    def bewegung_um_Grad(self):
-        gradzahl = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0]
+    def bewegung_um_Grad(self, gradzahl):
         pulse = self.berechneDutyCycle_aus_gradzahl(gradzahl)
         self.set_servo_pulse(pulse)
         

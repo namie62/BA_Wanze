@@ -22,7 +22,7 @@ if __name__=="__main__":
     try:
         #joy = xbox.Joystick()
         pwm = allgemeines_setup()
-        #led = class_Led.Led()
+        led = class_Led.Led()
         ellbogen_servo1 = adafruit_test.Servo_Adafruit("ellbogen_servo1", pwm)
         #ellbogen_servo2 = adafruit_test.Servo_Adafruit("ellbogen_servo2", pwm)
         #schulter_servo1 = adafruit_test.Servo_Adafruit("schulter_servo1", pwm)
@@ -31,14 +31,14 @@ if __name__=="__main__":
         #helm_servo = adafruit_test.Servo_Adafruit("helm_servo", pwm)
         
         while True:
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][0] = 0 #Gradzahl
+                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][0] = 180 #Gradzahl
                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][1] = 1
 #                 time.sleep(0.5)
 #                 #led.stelle_farbe_ein("gruen")
 #                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][0] = 180  #Gradzahl
 #                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][1] = 3
                 time.sleep(5)
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][0] = 180 #Gradzahl
+                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][0] = 90 #Gradzahl
                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'][1] = 3
                 
             
