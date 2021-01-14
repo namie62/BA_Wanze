@@ -56,8 +56,8 @@ class Servo_Adafruit():
                     #self.set_servo_pulse(self.servoEnd)
                 self.alter_zustand = gradzahl
                 time.sleep(0.2)
-        
             
+                
     def bewegung_um_Grad(self, gradzahl):
         pulse = self.berechneDutyCycle_aus_gradzahl(gradzahl)
         self.set_servo_pulse(pulse)

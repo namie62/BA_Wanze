@@ -28,6 +28,7 @@ FARBCODES = {
 LED_FREQUENZ = 150   #50 ist grenzwertig, dass gedimmte LED nicht flackert, eher höher gehen und dann nicht von Motor Hat aus steuern
 
 
+
 #Servo
 
 SERVO_FREQUENZ = 50
@@ -53,8 +54,8 @@ LED_PINS ={
 
 
 MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = { # Bei Test mit zwei versch. Servos fiel auf, dass sie unterschiedliche DC benötigen, um die vollen 180° anzufahren
-    "ellbogen_servo1" : (0.6, 2.3), # falls immer die gleichen Servos verwendet werden, dann kann das Dic evtl. aufgelöst werden 
-    "ellbogen_servo2" : (0.6, 2.3),
+    "ellbogen_servo1" : (2.3, 0.6), # falls immer die gleichen Servos verwendet werden, dann kann das Dic evtl. aufgelöst werden 
+    "ellbogen_servo2" : (2.3, 0.6),
     "schulter_servo1" : (0.6, 2.3),
     "schulter_servo2": (0.6, 2.3),# ACHTUNG: mit adafruit library eig 0.6 bis 2.5 aber bei 2.5 brummelt der motor, da es ihm scheinbar zu weit ist. Evtl experimentell ausprobieren bei den anderen motoren
     "nacken_servo": (0.6, 2.3),
