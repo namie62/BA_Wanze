@@ -2,8 +2,14 @@
 
 #hier können beliebige Namen für Zielzustände gesetzt werden
 
+#from threading import Lock
 
-ZIELZUSTAENDE = {
+#class Zielzustand:
+
+
+
+
+ZIELZUSTAENDE = { #hier lieber Tupel und dann beides übergeben
     "Notaus" : False, # direkt als Attribute: self.Notaus = bla bla
     "ellbogen_servo1" : [0,1], # 90 Grad muss Mitte sein
     "ellbogen_servo2" : [0,1],  # eingefahren 
