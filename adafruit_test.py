@@ -8,12 +8,12 @@ from threading import Lock
 
 
 class Servo_Adafruit():
-    def __init__(self, servoname, pwm):
+    def __init__(self, servoname, motorsteuerung):
         self.servo_lock = Lock()
         self.action_lock = Lock()
         self.schreiblock = Lock()
         self.servoname = servoname
-        self.pwm = pwm
+        self.motorsteuerung = motorsteuerung
         self.channel = Konstanten.MOTOREN_und_LED_CHANNELS.get(servoname)
         self.servoStart = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(servoname)[0]
         #gpio.setup(servoPIN, gpio.OUT)
@@ -27,17 +27,16 @@ class Servo_Adafruit():
 
 
     def set_servo_pulse(self, pulse):
+        pulse_length = 1000000 # 1,000,000 us per second (mikrosekunden sind gemeint)
+        pulse_length /= 50 # 50 Hz
+        pulse_length /= 4096 # 12 bits of resolution
+        pulse *= 1000
+        pulse /= pulse_length
+        pulse = round(pulse)
+        pulse = int(pulse)
+        
         with (self.schreiblock):
-            pulse_length = 1000000 # 1,000,000 us per second (mikrosekunden sind gemeint)
-            pulse_length /= 50 # 50 Hz
-            pulse_length /= 4096 # 12 bits of resolution
-            pulse *= 1000
-            pulse /= pulse_length
-            pulse = round(pulse)
-            pulse = int(pulse)
-            print("Puls",pulse, "Channel", self.channel)
-            self.pwm.set_pwm(self.channel, 0, pulse)
-            self.pwm.set_pwm_freq(50)
+            self.motorsteuerung.set_pwm(self.channel, pulse)
             
         
         
@@ -55,7 +54,7 @@ class Servo_Adafruit():
                     #time.sleep(0.5)
                     #self.set_servo_pulse(self.servoEnd)
                 self.alter_zustand = gradzahl
-                time.sleep(0.2)
+            time.sleep(0.2)
             
                 
     def bewegung_um_Grad(self, gradzahl):
@@ -109,5 +108,6 @@ class Servo_Adafruit():
         self.set_servo_pulse(0)
         #self.pwm.set_pwm_freq(0)
         
+
 
 

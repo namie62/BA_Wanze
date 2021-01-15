@@ -6,15 +6,15 @@ import class_Led
 import class_Servo
 import Zielzustand
 import xbox
-
-#from __future__ import division
+from motorsteuerung import Motorsteuerung
 import Adafruit_PCA9685
 import adafruit_test
 
 def allgemeines_setup():
     gpio.setmode(gpio.BOARD) # !!!!Achtung!!!! GPIO Mode kann entwedenr BOARD oder BCM sein. BCM heißt, dass die GPIO Nummern gleich den GPIO Bezeichnungen sind, BOARD heißt, dass die GPIO am Raspberry PI selbst abgezählt sind
     gpio.setwarnings(False) #Wenn Warnungen an kommt ständig die Meldung, dass die Channels schon verwendet werden -> False
-    motorsteuerung = Adafruit_PCA9685.PCA9685(address=0x41)
+    # motorsteuerung = Adafruit_PCA9685.PCA9685(address=0x41)
+    motorsteuerung = Motorsteuerung()
     return motorsteuerung
     
     
@@ -24,10 +24,10 @@ if __name__=="__main__":
         motorsteuerung = allgemeines_setup()
         led = class_Led.Led()
         ellbogen_servo1 = adafruit_test.Servo_Adafruit("ellbogen_servo1", motorsteuerung)
-        #ellbogen_servo2 = adafruit_test.Servo_Adafruit("ellbogen_servo2", motorsteuerung)
+        ellbogen_servo2 = adafruit_test.Servo_Adafruit("ellbogen_servo2", motorsteuerung)
         schulter_servo1 = adafruit_test.Servo_Adafruit("schulter_servo1", motorsteuerung)
         #schulter_servo2 = adafruit_test.Servo_Adafruit("schulter_servo2", motorsteuerung)
-        #nacken_servo = adafruit_test.Servo_Adafruit("nacken_servo", motorsteuerung)
+        nacken_servo = adafruit_test.Servo_Adafruit("nacken_servo", motorsteuerung)
         #helm_servo = adafruit_test.Servo_Adafruit("helm_servo", motorsteuerung)
         
         while not joy.Back():
