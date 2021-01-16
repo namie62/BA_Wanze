@@ -1,17 +1,32 @@
 #-*- coding: utf-8 -*-
+import Zielzustand
 
 # hier werden die Emotionen definiert, sprich:
 # Emotion 1 hat folgenden Zielzustand:
+# Wird aber noch nicht verwendet
 
-EMOTION1 = {
-    "Notaus" : False, # direkt als Attribute: self.Notaus = bla bla
-    "Nacken" : "mittig", #links, rechts
-    "Kopf" : "ausgefahren", # eingefahren 
-    "Led" : "rot", # farben reinschreiben, evlt. noch pulsieren oder so was ergänzen
-    "Schulter_rechts": "20", # Gradzahlen, 0 ist unten und dann gehts bis 180 weiter hoch
-    "Schulter_links" : "40",
-    "Ellbogen_rechts": "10",
-    "Ellbogen_links": "90",
-    "Helm": "0",
-                              # usw.
-                              }
+class Emotion():
+        
+    WUT = {
+        "ellbogen_servo1" : (0,1), #(Winkel, Schrittanzahl)
+        "ellbogen_servo2" : (0,1), 
+        "schulter_servo1": (0,1), 
+        "schulter_servo2" : (0,1),
+        "nacken_servo" : (0,1), 
+        "helm_servo": (0,1),
+        "led_farbe" : "rot"
+        }
+    
+    
+# in Main wird die Emotion übergeben 
+    def stelle_emotion_ein(self, emotion):
+        led.stelle_farbe_ein("gruen")
+        Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = emotion.get("ellbogen_servo1") # Überschreibt bei Knopfdruck die Zielzustände mit (Gradzahl, Schrittanzahl)
+        Zielzustand.ZIELZUSTAENDE['ellbogen_servo2'] = emotion.get("ellbogen_servo2")  
+        Zielzustand.ZIELZUSTAENDE['schulter_servo1'] = emotion.get("schulter_servo1")
+        Zielzustand.ZIELZUSTAENDE['schulter_servo2'] = emotion.get("schulter_servo2")
+        Zielzustand.ZIELZUSTAENDE['nacken_servo'] = emotion.get("nacken_servo")
+        Zielzustand.ZIELZUSTAENDE['helm_servo'] = emotion.get("helm_servo")
+
+        
+        

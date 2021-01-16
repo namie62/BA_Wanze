@@ -9,6 +9,7 @@ class Led():
     # Initialisierung der Pins, bei anderen Pins einfach die Pin-Nummer ändern
         self.pwm_objekte_led = self.setupleds(Konstanten.LED_FREQUENZ)
     
+    
     def stop(self):   
         for i in self.pwm_objekte_led:
             self.pwm_objekte_led.stop()        
@@ -24,9 +25,9 @@ class Led():
             pwm_objekte_led.append(pwm_objekt)
         return pwm_objekte_led
 
-    def aus(self): 
-        for i in range(len(self.pwm_objekte_led)): # Duty Cycle ändern um andere Farben und Helligkeiten einzustellen
-            self.pwm_objekte_led[i].ChangeDutyCycle(0) # -> nur Mittenwert der Versorgungsspannung von Bedeutung -> je größer Duty Cycle, umso heller
+#     def led_auschalten(self): 
+#         for i in range(len(self.pwm_objekte_led)): # Duty Cycle ändern um andere Farben und Helligkeiten einzustellen
+#             self.pwm_objekte_led[i].ChangeDutyCycle(0) # -> nur Mittenwert der Versorgungsspannung von Bedeutung -> je größer Duty Cycle, umso heller
         
         
     def stelle_farbe_ein(self, farbe):
