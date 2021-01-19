@@ -59,3 +59,5 @@ MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = {
     "schulter_servo2": (2300, 600),
     "nacken_servo": (600, 2300), 
     "helm_servo" : (600,2300), }
+
+STUFENANZAHL_ZWISCHEN_MIN_U_MAX_WINKEL_DER_MOTOREN = 11
