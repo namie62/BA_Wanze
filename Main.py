@@ -23,7 +23,7 @@ if __name__=="__main__":
         joy = xbox.Joystick()
         motorsteuerung = allgemeines_setup()
         led = class_Led.Led()
-        class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo1", motorsteuerung)
+        #class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo1", motorsteuerung)
         
         #class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo2", motorsteuerung)
         class_Servo_Steuerung.Servo_Adafruit("schulter_servo1", motorsteuerung)
@@ -35,16 +35,19 @@ if __name__=="__main__":
         while not joy.Back():
             
             if joy.leftY() > 0:
-                #errechne_zielzustand_ellbogen_aus_joystickstellung()
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = (0,1,1)
+               # print("joystick")
+                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = (100,1,1)
+                Zielzustand.ZIELZUSTAENDE['schulter_servo1'] = (100,1,1)
                 
             if joy.leftY() < 0:
+                #print("joystick")
                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = (0,1,2)
+                Zielzustand.ZIELZUSTAENDE['schulter_servo1'] = (0,1,2)
 
             if joy.A():
                 led.stelle_farbe_ein("gruen")
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = (0,1,0) # Überschreibt bei Knopfdruck die Zielzustände mit (Gradzahl, Schrittanzahl)
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo2'] = (0,1,0)  
+                Zielzustand.ZIELZUSTAENDE['ellbogen_servo1'] = (0,1,0) # Überschreibt bei Knopfdruck die Zielzustände mit (Prozentzahl/Gradzahl (aber lieber Prozent; kann in Konstanten der Servomodus eingestellt werden), Schrittanzahl)
+                Zielzustand.ZIELZUSTAENDE['ellbogen_servo2'] = (0,1,0) #(Prozentzahl/Gradzahl, Schrittanzahl, Toggle für Joytick?)
                 Zielzustand.ZIELZUSTAENDE['schulter_servo1'] = (0,1,0) 
                 Zielzustand.ZIELZUSTAENDE['schulter_servo2'] = (0,1,0) 
                 Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (0,1,0)
@@ -129,7 +132,7 @@ if __name__=="__main__":
                 Zielzustand.ZIELZUSTAENDE['schulter_servo1'] = (100,1,0)   
                 Zielzustand.ZIELZUSTAENDE['schulter_servo2'] = (100,1,0)   
                 Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (100,1,0)   
-                Zielzustand.ZIELZUSTAENDE['helm_servo'] = (100,1,0)   
+                Zielzustand.ZIELZUSTAENDE['helm_servo'] = (100,1,0)
                 
     except KeyboardInterrupt:  
        gpio.cleanup()

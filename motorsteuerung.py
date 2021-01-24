@@ -11,6 +11,6 @@ class Motorsteuerung:
 
     def set_pwm(self, channel, pulse):
         with self.lock:
-            print("[%s] pulse=%s, channel=%s" % (time.time(), pulse, channel) )
+            #print("[%s] pulse=%s, channel=%s" % (time.time(), pulse, channel) )
             self.motorsteuerung.set_pwm(channel, 0, pulse)
             self.motorsteuerung.set_pwm_freq(50)
