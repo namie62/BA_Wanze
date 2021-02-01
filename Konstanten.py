@@ -55,7 +55,7 @@ LED_PINS ={
 
 # Dictionary, das die maximalen und minimalen Werte des Duty Cycles (=DC) in Mikrosekunden enthält:
 # - je nach Einbaurichtung des Motors, müssen die Drehrichtungen angepasst werden, indem der maximale und minimale DC umgedreht werden.
-MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = { 
+MOTOREN_MAX_MIN_PULSDAUER = { 
     "ellbogen_servo_links" : (2300, 1261), # 1261 entspricht ca. 110° (also von 180° auf 70°), da Ellbogenmotoren dürfen keine 180° rotieren, sonst wird die Sehne abgerissen!! -> Maximaler DC wurde kleiner gemacht. Experimentell wurde ermittelt, dass 110° Grad reicht -> DCmin = 1261
     "ellbogen_servo_rechts" : (600, 1638),  # 1638 entspricht ca. 110° (also von 0° auf 110°), da Ellbogenmotoren dürfen keine 180° rotieren, sonst wird die Sehne abgerissen!! -> Maximaler DC wurde kleiner gemacht. Experimentell wurde ermittelt, dass 110° Grad reicht -> DCmin = 1261
     "schulter_servo_links" : (600, 2300), # Schulterservos können 180°, rotieren aber wegen Übersetzungsverhältnis der Zahnräder einen kleineren Winkel und dadurch langsamer
@@ -64,6 +64,6 @@ MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL = {
     "helm_servo" : (600,2300), }
 
 SERVO_MODUS = "prozent"
-STUFENANZAHL_ZWISCHEN_MIN_U_MAX_WINKEL_DER_MOTOREN = 100 # Da Prozent
-GRADZAHL_ZWISCHEN_MIN_U_MAX_WINKEL_DER_MOTOREN = 180 # Da Prozent
+STUFENANZAHL_ZWISCHEN_MIN_U_MAX_POSITION_DER_MOTOREN = 100 # Da Prozent
+#GRADZAHL_ZWISCHEN_MIN_U_MAX_POSITION_DER_MOTOREN = 180 # Da Prozent
 PROZENT_SCHRITTZAHL_JOYSTICK = 5

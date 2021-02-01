@@ -5,7 +5,7 @@ import RPi.GPIO as gpio
 import class_Led
 import Zielzustand
 import xbox
-from motorsteuerung import Motorsteuerung
+from class_Motorsteuerung import Motorsteuerung
 import Adafruit_PCA9685
 import class_Servo_Steuerung
 import class_Fahrgestell
@@ -38,10 +38,10 @@ if __name__=="__main__":
         while not joy.Back():
             
             if joy.leftY() > 0:
-                bewegung.joystick_ganzer_linker_arm_nach_oben()
+                bewegung.joystick_linker_arm_nach_oben()
                 
             if joy.leftY() < 0:
-                bewegung.joystick_ganzer_linker_arm_nach_unten()
+                bewegung.joystick_linker_arm_nach_unten()
             
             if joy.leftX() > 0:
                 bewegung.joystick_linker_ellbogen_nach_oben()
@@ -50,10 +50,10 @@ if __name__=="__main__":
                 bewegung.joystick_linker_ellbogen_nach_unten()
                 
             if joy.rightY() > 0:
-                bewegung.joystick_ganzer_rechter_arm_nach_oben()
+                bewegung.joystick_rechter_arm_nach_oben()
             
             if joy.rightY() < 0:
-                bewegung.joystick_ganzer_recher_arm_nach_unten()
+                bewegung.joystick_rechter_arm_nach_unten()
                 
             if joy.rightX() > 0:
                 bewegung.joystick_rechter_ellbogen_nach_oben()

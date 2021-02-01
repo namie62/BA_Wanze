@@ -21,8 +21,8 @@ class Servo_Adafruit():
 
     def ermittle_extremwinkel_und_setze_default_Werte(self):       
         #Welcher Winkel max und welcher min ist, hängt von Einbaurichtung des Motors ab. Reihenfolge im Dic in Konstanten dabei zu beachten: 0 ist 0%/0° und 1 ist 100%/180°
-        self.default_dc_nullposition = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[0] # enstspricht defaul_winkel für 0% / 0° 
-        self.default_dc_maxposition = Konstanten.MOTOREN_MAX_MIN_DC_FÜR_GRADZAHL.get(self.servoname)[1] # enstspricht defaul_winkel für 100% / 180°
+        self.default_dc_nullposition = Konstanten.MOTOREN_MAX_MIN_PULSDAUER.get(self.servoname)[0] # enstspricht defaul_winkel für 0% / 0° 
+        self.default_dc_maxposition = Konstanten.MOTOREN_MAX_MIN_PULSDAUER.get(self.servoname)[1] # enstspricht defaul_winkel für 100% / 180°
         # holt sich beide Winkel und vergleicht diese
         if self.default_dc_nullposition < self.default_dc_maxposition:
             self.dc_fuer_min_winkel_oder_prozent = self.default_dc_nullposition
@@ -89,13 +89,13 @@ class Servo_Adafruit():
     
     def prozentmodus_berechne_dc_fuer_1_prozent(self):
         # damit nicht versehentlich falsche Gradzahlen übergeben werden können, wird ein maxwinkel und minwinkel gesetzt statt den Grad-Angaben. Angabe der Zwischenschritte dann in Prozent zum maximalen Winkel
-        schrittanzahl = Konstanten.STUFENANZAHL_ZWISCHEN_MIN_U_MAX_WINKEL_DER_MOTOREN   # 100, weil 100% 
+        schrittanzahl = Konstanten.STUFENANZAHL_ZWISCHEN_MIN_U_MAX_POSITION_DER_MOTOREN  # 100, weil 100% 
         dc_von_1_prozent = (self.dc_fuer_max_winkel_oder_prozent - self.dc_fuer_min_winkel_oder_prozent)/schrittanzahl   
         return dc_von_1_prozent #entspricht DC bei 1%
             
     def prozentmodus_berechne_dc_aus_prozentzahl(self, wert):
         delta_dc = self.default_dc_maxposition - self.default_dc_nullposition
-        dc_pro_grad = delta_dc/Konstanten.STUFENANZAHL_ZWISCHEN_MIN_U_MAX_WINKEL_DER_MOTOREN   #hier muss evlt noch eine Variable eingefügt werden, da helmservo nur 145 Grad kann. Wäre aber auch möglich, dass das egal ist, weil die GEadbewegung bei dem nciht so genau sein muss.
+        dc_pro_grad = delta_dc/Konstanten.STUFENANZAHL_ZWISCHEN_MIN_U_MAX_POSITION_DER_MOTOREN   #hier muss evlt noch eine Variable eingefügt werden, da helmservo nur 145 Grad kann. Wäre aber auch möglich, dass das egal ist, weil die GEadbewegung bei dem nciht so genau sein muss.
         dc = (dc_pro_grad * wert) + self.default_dc_nullposition
         return dc
     
