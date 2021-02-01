@@ -45,6 +45,27 @@ class Servo_Adafruit():
 
 # Thread Methode, die jeder Servo ausführt
     def action(self):
+#         if Konstanten.SERVO_MODUS == "grad": #das heißt, dass für die Zustände in der Main Gradzahlen eingesetzt werden müssen (alter und und neuer_Zustand sind dann Gradzahlen)
+#             # war der anfängliche Modus
+#             #GEFAHR:  nicht alle Servos dürfen im eingebauten Zustand um 180° drehen, da sonst etwas kaputt gehen kann, daher Prozentmodus besser
+#             while True:
+#                     self.neuer_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0] # ermittelt den neuen Zustand
+#                     if self.neuer_zustand == self.alter_zustand: # nur wenn der neue und der alte Zustand nicht gleich sind, wird Veränderung eingeleitet
+#                         pass
+#                     else:
+#                         self.toggle_joystick = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[2]
+#                         if self.toggle_joystick == 0: #es gibt 0 1 und 2. Bei 0 ist der Joystick nicht verwendet, bei 1 ist er nach oben geschoben, bei 2 nach unten
+#                             #self.gradmodus_bewegung_um_Grad(neuer_zustand)
+#                             self.gradmodus_bewegung_nach_gradzahl_in_schritten()
+#                             self.alter_zustand = self.neuer_zustand
+#                         else:
+#                             #self.joystick_bewegung()   
+#                             print("joystickbewegung")
+#                             # hier shcauen, ob alter zustand überschrieben werden muss
+#                     time.sleep(0.2)
+#                     
+#         else: # servo_modus = prozent
+#             # Jetzt sind alter und neuer Zustand Prozentwerte zwischen den maximal zulässigen Winkeln -> keine Überdrehungsgefahr der Motoren
             self.alter_zustand = self.prozentmodus_berechne_prozentzahl_von(self.alter_zustand) # Da sonst Dc mit Prozent verglichen wird
             while True:
                 self.neuer_zustand = Zielzustand.ZIELZUSTAENDE.get(self.servoname)[0] # ermittelt den neuen Zustand jetzt in Prozent
@@ -52,7 +73,7 @@ class Servo_Adafruit():
                     pass
                 else:
                     self.checke_joystick_toggle_und_löse_bewegung_aus()
-                time.sleep(0.001)
+                time.sleep(0.01)
                 
 
     def checke_joystick_toggle_und_löse_bewegung_aus(self):
@@ -63,12 +84,14 @@ class Servo_Adafruit():
         else:
             self.prozentmodus_joystick_bewegung()
 
+
     def prozentmodus_joystick_bewegung(self):
         if self.toggle_joystick == 1: # das heißt er ist nach oben gedrückt
                 self.prozentmodus_joystick_bewege_arm_nach_oben()
         elif self.toggle_joystick == 2: # wenn Joystick nach unten gedrückt wird
                 self.prozentmodus_joystick_bewege_arm_nach_unten()
                 
+        
     def prozentmodus_joystick_bewege_arm_nach_oben(self):
         neuer_zustand = self.alter_zustand + Konstanten.PROZENT_SCHRITTZAHL_JOYSTICK
         if neuer_zustand <= 100: # nicht weiter als 100 Prozent, sonst Gefahr von Beschädigungen
@@ -120,7 +143,7 @@ class Servo_Adafruit():
             ausgangs_position += self.schritthoehe
             dc = self.prozentmodus_berechne_dc_aus_prozentzahl(ausgangs_position)
             self.set_servo_pulse(dc)
-            #time.sleep(0.01)
+            time.sleep(0.01)
             
     def prozentmodus_bewegung_nach_unten(self):
         self.beide_Modi_berechne_schritthoehe(self.alter_zustand, self.neuer_zustand)
@@ -129,7 +152,7 @@ class Servo_Adafruit():
             ausgangs_position -= self.schritthoehe
             dc = self.prozentmodus_berechne_dc_aus_prozentzahl(ausgangs_position)
             self.set_servo_pulse(dc)
-            #time.sleep(0.01)
+            time.sleep(0.01)
                 
                 
     # Sowohl für Gradmodus als auch für Prozentmodus gleich      
