@@ -8,5 +8,5 @@ ZIELZUSTAENDE = {
     "schulter_servo_rechts" : (0,1,0),
     "nacken_servo" : (0,1,0), 
     "helm_servo": (0,1,0),
-    "fahrgestell" : 0  # 0: fährt nicht; 1: vowärts; 2: rückwärts; 3: Rechtskurve; 4: Linkskurve
+    "fahrgestell" : (0)  # (toggle, richtung) 0 heißt aus, 1 ein und richtung 0 noch keine eingegeben, 1: vowärts; 2: rückwärts; 3: Rechtskurve; 4: Linkskurve
     }

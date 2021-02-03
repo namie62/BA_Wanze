@@ -15,8 +15,8 @@ import class_Bewegungsablaeufe
 def allgemeines_setup():
     gpio.setmode(gpio.BOARD) # !!!!Achtung!!!! GPIO Mode kann entwedenr BOARD oder BCM sein. BCM heißt, dass die GPIO Nummern gleich den GPIO Bezeichnungen sind, BOARD heißt, dass die GPIO am Raspberry PI selbst abgezählt sind
     gpio.setwarnings(False) #Wenn Warnungen an kommt ständig die Meldung, dass die Channels schon verwendet werden -> False
-    motorsteuerung = Motorsteuerung()
-    return motorsteuerung
+   # motorsteuerung = Motorsteuerung()
+    return 0#motorsteuerung
 
 
 if __name__=="__main__":
@@ -24,18 +24,19 @@ if __name__=="__main__":
         joy = xbox.Joystick()
         motorsteuerung = allgemeines_setup()
         led = class_Led.Led()
-        bewegung = class_Bewegungsablaeufe.Bewegungsablaeufe()
-        class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_links", motorsteuerung)
+       # bewegung = class_Bewegungsablaeufe.Bewegungsablaeufe()
+       # class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_links", motorsteuerung)
         
-        class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_rechts", motorsteuerung)
-        class_Servo_Steuerung.Servo_Adafruit("schulter_servo_links", motorsteuerung)
-        class_Servo_Steuerung.Servo_Adafruit("schulter_servo_rechts", motorsteuerung)
+        #class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_rechts", motorsteuerung)
+        #class_Servo_Steuerung.Servo_Adafruit("schulter_servo_links", motorsteuerung)
+        #class_Servo_Steuerung.Servo_Adafruit("schulter_servo_rechts", motorsteuerung)
         #class_Servo_Steuerung.Servo_Adafruit("nacken_servo", motorsteuerung)
         #class_Servo_Steuerung.Servo_Adafruit("helm_servo", motorsteuerung)
-        #class_Fahrgestell.Fahrgestell()
+        class_Fahrgestell.Fahrgestell()
  
         
         while not joy.Back():
+
             
             if joy.leftY() > 0:
                 bewegung.joystick_linker_arm_nach_oben()
@@ -97,7 +98,7 @@ if __name__=="__main__":
                 Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (30,1,0)
                 Zielzustand.ZIELZUSTAENDE['helm_servo'] = (30,1,0)  
 
-            if joy.rightBumper():
+            if joy.leftBumper():
                 led.stelle_farbe_ein("giftgruen")
                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (50,1,0)
                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (50,1,0) 
@@ -106,33 +107,27 @@ if __name__=="__main__":
                 Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (50,1,0)  
                 Zielzustand.ZIELZUSTAENDE['helm_servo'] = (50,1,0)  
 
-            if joy.leftBumper():
-                led.stelle_farbe_ein("weiß")
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (100,1,0)
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (100,1,0)  
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_links'] = (100,1,0)  
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_rechts'] = (100,1,0)  
-                Zielzustand.ZIELZUSTAENDE['nacken_servo']= (100,1,0)  
-                Zielzustand.ZIELZUSTAENDE['helm_servo'] = (100,1,0)  
 
-            if joy.dpadLeft():
-                Zielzustand.ZIELZUSTAENDE['fahrgestell'] = 4
-                led.stelle_farbe_ein("flieder")
-                
-            if joy.dpadDown():
-                Zielzustand.ZIELZUSTAENDE['fahrgestell'] = 2
-                led.stelle_farbe_ein("türkis")
-                
-
-            if joy.dpadRight():
-                Zielzustand.ZIELZUSTAENDE['fahrgestell'] = 3
-                led.stelle_farbe_ein("orange")    
-
-            if joy.dpadUp():
-                Zielzustand.ZIELZUSTAENDE['fahrgestell'] = 1
-                led.stelle_farbe_ein("lila")
-
-                
+            if joy.rightBumper() == 1:
+                #print(joy.leftBumper())
+                if joy.dpadLeft():
+                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = (4)
+                    led.stelle_farbe_ein("flieder")
+                    
+                if joy.dpadDown():
+                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = (2)
+                    led.stelle_farbe_ein("türkis")
+                    
+                if joy.dpadRight():
+                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = (3)
+                    led.stelle_farbe_ein("orange")    
+                    
+                if joy.dpadUp():
+                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = (1)
+                    led.stelle_farbe_ein("lila")
+            else: 
+                Zielzustand.ZIELZUSTAENDE['fahrgestell'] = (0)
+    
     except KeyboardInterrupt:  
        gpio.cleanup()
                 

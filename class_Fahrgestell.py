@@ -8,13 +8,12 @@ class Fahrgestell():
     def __init__(self):
         gpio.setmode(gpio.BOARD)
         pin_nummern = Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell")
-        pin1_rechts = pin_nummern[0]
-        pin2_rechts = pin_nummern[1]
-        pin1_links = pin_nummern[2]
-        pin2_links = pin_nummern[3]
+        pin1_rechts = pin_nummern[0] #PIN 21
+        pin2_rechts = pin_nummern[1] #PIN 22
+        pin1_links = pin_nummern[2] #PIN 23
+        pin2_links = pin_nummern[3] #PIN 24
 
         for i in range(len(Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell"))):
-            print(Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell")[i])
             gpio.setup(Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell")[i], gpio.OUT)
         
         
@@ -36,7 +35,7 @@ class Fahrgestell():
         while True:
             self.zielzustand = Zielzustand.ZIELZUSTAENDE.get("fahrgestell")
             if self.zielzustand == 0:
-                pass
+                self.anhalten()
             elif self.zielzustand == 1:
                 self.vorwaerts()
             elif self.zielzustand == 2:
@@ -47,13 +46,21 @@ class Fahrgestell():
                 self.linkskurve()
             time.sleep(0.1)
                 
-    def vorwaerts(self):
-        self.in1_rechts.ChangeDutyCycle(100)
-        self.in2_rechts.stop()
-        self.in1_links.ChangeDutyCycle(100)
-        self.in2_links.stop()
-    
+    def anhalten(self):
+        self.in1_rechts.ChangeDutyCycle(0)
+        self.in2_rechts.ChangeDutyCycle(0)
+        self.in1_links.ChangeDutyCycle(0)
+        self.in2_links.ChangeDutyCycle(0)
+        
+        
+        
     def rueckwaerts(self):
+        self.in1_rechts.ChangeDutyCycle(100)
+        self.in2_rechts.ChangeDutyCycle(0)
+        self.in1_links.ChangeDutyCycle(100)
+        self.in2_links.ChangeDutyCycle(0)
+    
+    def vorwaerts(self):
         self.in1_rechts.ChangeDutyCycle(0)
         self.in2_rechts.ChangeDutyCycle(100)
         self.in1_links.ChangeDutyCycle(0)
@@ -62,11 +69,11 @@ class Fahrgestell():
     def linkskurve(self):
         self.in1_rechts.ChangeDutyCycle(0)
         self.in2_rechts.ChangeDutyCycle(100)
-        self.in1_links.ChangeDutyCycle(100)
+        self.in1_links.ChangeDutyCycle(0)
         self.in2_links.ChangeDutyCycle(0)
     
     def rechtskurve(self):
-        self.in1_rechts.ChangeDutyCycle(100)
+        self.in1_rechts.ChangeDutyCycle(0)
         self.in2_rechts.ChangeDutyCycle(0)
         self.in1_links.ChangeDutyCycle(0)
         self.in2_links.ChangeDutyCycle(100)

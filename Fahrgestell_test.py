@@ -13,12 +13,15 @@ pin2_links = pin_nummern[3]
 
 for i in range(len(Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell"))):
     gpio.setup(Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell")[i], gpio.OUT)
+    
+jo = gpio.PWM(21, 100)
+jo.start(100)
 
-print(pin1_rechts, pin2_rechts)
-gpio.output(21, gpio.HIGH)
+
+
 gpio.output(22, gpio.LOW)
-gpio.output(23, gpio.HIGH)
-gpio.output(24, gpio.LOW)
+#gpio.output(23, gpio.LOW)
+#gpio.output(24, gpio.LOW)
 time.sleep(30)
 
 gpio.cleanup()
