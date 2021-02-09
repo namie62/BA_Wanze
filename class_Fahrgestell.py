@@ -34,15 +34,15 @@ class Fahrgestell():
     def action(self):
         while True:
             self.zielzustand = Zielzustand.ZIELZUSTAENDE.get("fahrgestell")
-            if self.zielzustand == 0:
+            if self.zielzustand == "stopp":
                 self.anhalten()
-            elif self.zielzustand == 1:
+            elif self.zielzustand == "vorwaerts":
                 self.vorwaerts()
-            elif self.zielzustand == 2:
+            elif self.zielzustand == "rueckwaerts":
                 self.rueckwaerts()
-            elif self.zielzustand == 3:
+            elif self.zielzustand == "rechtskurve_vorwaerts":
                 self.rechtskurve()
-            elif self.zielzustand == 4:
+            elif self.zielzustand == "linkskurve_vorwaerts":
                 self.linkskurve()
             time.sleep(0.1)
                 
@@ -52,32 +52,29 @@ class Fahrgestell():
         self.in1_links.ChangeDutyCycle(0)
         self.in2_links.ChangeDutyCycle(0)
         
-        
-        
-    def rueckwaerts(self):
+    def vorwaerts(self):
         self.in1_rechts.ChangeDutyCycle(100)
         self.in2_rechts.ChangeDutyCycle(0)
         self.in1_links.ChangeDutyCycle(100)
         self.in2_links.ChangeDutyCycle(0)
     
-    def vorwaerts(self):
+    def rueckwaerts(self):
         self.in1_rechts.ChangeDutyCycle(0)
         self.in2_rechts.ChangeDutyCycle(100)
         self.in1_links.ChangeDutyCycle(0)
         self.in2_links.ChangeDutyCycle(100)
         
-    def linkskurve(self):
-        self.in1_rechts.ChangeDutyCycle(0)
-        self.in2_rechts.ChangeDutyCycle(100)
-        self.in1_links.ChangeDutyCycle(0)
-        self.in2_links.ChangeDutyCycle(0)
-    
     def rechtskurve(self):
         self.in1_rechts.ChangeDutyCycle(0)
+        self.in2_rechts.ChangeDutyCycle(100)
+        self.in1_links.ChangeDutyCycle(100)
+        self.in2_links.ChangeDutyCycle(0)
+    
+    def linkskurve(self):
+        self.in1_rechts.ChangeDutyCycle(100)
         self.in2_rechts.ChangeDutyCycle(0)
         self.in1_links.ChangeDutyCycle(0)
         self.in2_links.ChangeDutyCycle(100)
         
-        
-        
+           
         
