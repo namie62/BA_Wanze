@@ -39,7 +39,7 @@ MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt
     "schulter_servo_rechts": 4,
     "nacken_servo": 12,
     "helm_servo" : 15,
-    "fahrgestell" : [21,22,23,24]}
+    "fahrgestell" : [21,22,23,32]}
     
 
 # Pin-Belegung der LEDs
