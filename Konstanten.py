@@ -1,4 +1,7 @@
 #-*- coding: utf-8 -*-
+import RPi.GPIO as gpio
+
+
 
 # LED:
 # Vorwiderstände der LEDs im Modell:
@@ -39,8 +42,21 @@ MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt
     "schulter_servo_rechts": 4,
     "nacken_servo": 12,
     "helm_servo" : 15,
-    "fahrgestell" : [21,22,23,32]}
+    "fahrgestell" : [21,22,23,32],
+    "schrittmotor" : [11,13,15,19]}
     
+
+# Schrittmotor Tabelle
+SCHRITTMOTOR_TABELLE = [[gpio.HIGH,gpio.LOW,gpio.LOW,gpio.LOW],
+         [gpio.HIGH,gpio.HIGH,gpio.LOW,gpio.LOW],
+         [gpio.LOW,gpio.HIGH,gpio.LOW,gpio.LOW],
+         [gpio.LOW,gpio.HIGH,gpio.HIGH,gpio.LOW],
+         [gpio.LOW,gpio.LOW,gpio.HIGH,gpio.LOW],
+         [gpio.LOW,gpio.LOW,gpio.HIGH,gpio.HIGH],
+         [gpio.LOW,gpio.LOW,gpio.LOW,gpio.HIGH],
+         [gpio.HIGH,gpio.LOW,gpio.LOW,gpio.HIGH]]
+        
+
 
 # Pin-Belegung der LEDs
 LED_PINS ={

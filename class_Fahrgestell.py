@@ -6,7 +6,7 @@ import Zielzustand
 
 class Fahrgestell():
     def __init__(self):
-        gpio.setmode(gpio.BOARD)
+        #gpio.setmode(gpio.BOARD)
         pin_nummern = Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell")
         pin1_rechts = pin_nummern[0] #PIN 21
         pin2_rechts = pin_nummern[1] #PIN 22
