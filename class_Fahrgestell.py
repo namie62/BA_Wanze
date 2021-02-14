@@ -1,39 +1,41 @@
-import time
+#-*- coding: utf-8 -*-
+from time import sleep
 import RPi.GPIO as gpio
-import Konstanten
 from threading import Thread
-import Zielzustand
+from Zielzustand import ZIELZUSTAENDE 
+from Konstanten import MOTOREN_und_LED_CHANNELS, FAHRGESTELL_FREQUENZ
 
 class Fahrgestell():
     def __init__(self):
-        #gpio.setmode(gpio.BOARD)
-        pin_nummern = Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell")
+        #holt sich die Pin-Nummern aus Konstanten.py
+        pin_nummern = MOTOREN_und_LED_CHANNELS.get("fahrgestell")
         pin1_rechts = pin_nummern[0] #PIN 21
         pin2_rechts = pin_nummern[1] #PIN 22
         pin1_links = pin_nummern[2] #PIN 23
         pin2_links = pin_nummern[3] #PIN 24
 
-        for i in range(len(Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell"))):
-            gpio.setup(Konstanten.MOTOREN_und_LED_CHANNELS.get("fahrgestell")[i], gpio.OUT)
+        for i in range(len(MOTOREN_und_LED_CHANNELS.get("fahrgestell"))):
+            gpio.setup(MOTOREN_und_LED_CHANNELS.get("fahrgestell")[i], gpio.OUT)
         
+        #initialisiert PWM
+        self.in1_rechts = gpio.PWM(pin1_rechts, FAHRGESTELL_FREQUENZ)
+        self.in2_rechts = gpio.PWM(pin2_rechts, FAHRGESTELL_FREQUENZ)
+        self.in1_links = gpio.PWM(pin1_links, FAHRGESTELL_FREQUENZ)
+        self.in2_links = gpio.PWM(pin2_links, FAHRGESTELL_FREQUENZ)
         
-        self.in1_rechts = gpio.PWM(pin1_rechts, Konstanten.FAHRGESTELL_FREQUENZ)
-        self.in2_rechts = gpio.PWM(pin2_rechts, Konstanten.FAHRGESTELL_FREQUENZ)
-        self.in1_links = gpio.PWM(pin1_links, Konstanten.FAHRGESTELL_FREQUENZ)
-        self.in2_links = gpio.PWM(pin2_links, Konstanten.FAHRGESTELL_FREQUENZ)
-        
+        #startet PWM
         self.in1_rechts.start(0)
         self.in2_rechts.start(0)
         self.in1_links.start(0)
         self.in2_links.start(0)
         
-        self.thread = Thread(target = self.action) # initialisiert und startet für jeden Servo einen eigenen Thread
+        #initialisiert und startet Thread
+        self.thread = Thread(target = self.__action) # initialisiert und startet für jeden Servo einen eigenen Thread
         self.thread.start() 
 
-    
-    def action(self):
+    def __action(self):
         while True:
-            self.zielzustand = Zielzustand.ZIELZUSTAENDE.get("fahrgestell")
+            self.zielzustand = ZIELZUSTAENDE.get("fahrgestell")
             if self.zielzustand == "stopp":
                 self.anhalten()
             elif self.zielzustand == "vorwaerts":
@@ -44,7 +46,7 @@ class Fahrgestell():
                 self.rechtskurve()
             elif self.zielzustand == "linkskurve_vorwaerts":
                 self.linkskurve()
-            time.sleep(0.1)
+            sleep(0.00001)
                 
     def anhalten(self):
         self.in1_rechts.ChangeDutyCycle(0)
@@ -75,6 +77,3 @@ class Fahrgestell():
         self.in2_rechts.ChangeDutyCycle(0)
         self.in1_links.ChangeDutyCycle(0)
         self.in2_links.ChangeDutyCycle(100)
-        
-           
-        

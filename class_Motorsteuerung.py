@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from threading import Lock
 import Adafruit_PCA9685
 import time

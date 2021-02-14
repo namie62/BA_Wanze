@@ -1,6 +1,6 @@
+#-*- coding: utf-8 -*-
 import Zielzustand
 import Emotionen
-
 
 
 # hier kommen die Methoden rein, welche die Standardbewegungsabläufe enthalten
