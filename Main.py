@@ -10,6 +10,7 @@ import class_Fahrgestell
 import class_Bewegungsablaeufe
 import class_Schrittmotor
 import shutdown
+from time import sleep
 
 def allgemeines_setup():
     gpio.setmode(gpio.BOARD) # !!!!Achtung!!!! GPIO Mode kann entwedenr BOARD oder BCM sein. BCM heißt, dass die GPIO Nummern gleich den GPIO Bezeichnungen sind, BOARD heißt, dass die GPIO am Raspberry PI selbst abgezählt sind
@@ -22,7 +23,7 @@ if __name__=="__main__":
         joy = xbox.Joystick()
         motorsteuerung = allgemeines_setup()
         led = class_Led.Led()
-        class_Schrittmotor.Schrittmotor()
+        #class_Schrittmotor.Schrittmotor()
         bewegung = class_Bewegungsablaeufe.Bewegungsablaeufe()
         class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_links", motorsteuerung)
         
@@ -34,6 +35,9 @@ if __name__=="__main__":
         class_Fahrgestell.Fahrgestell()
                                                                  
         while True:
+            if joy.leftTrigger():
+                led.stop()
+                bewegung.nullposition()
            
             if joy.leftY() > 0:
                 bewegung.joystick_linker_arm_nach_oben()
@@ -58,55 +62,31 @@ if __name__=="__main__":
             
             if joy.rightX() < 0:
                 bewegung.joystick_rechter_ellbogen_nach_unten()
+                
 
             if joy.A():
                 led.stelle_farbe_ein("gruen")
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (0,1,0) # Überschreibt bei Knopfdruck die Zielzustände mit (Prozentzahl/Gradzahl (aber lieber Prozent; kann in Konstanten der Servomodus eingestellt werden), Schrittanzahl)
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (0,1,0) #(Prozentzahl/Gradzahl, Schrittanzahl, Toggle für Joytick?)
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_links'] = (0,1,0) 
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_rechts'] = (0,1,0) 
-                Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (40,1,0)
-                Zielzustand.ZIELZUSTAENDE['helm_servo'] = (0,1,0)
+                bewegung.angst()
                 
             if joy.B():
-                
                 led.stelle_farbe_ein("rot")
-                #bewegung.wackel_mit_den_armen()
-#                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (100,5,-1)  
-#                 Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (100,1,-1)  
-#                 Zielzustand.ZIELZUSTAENDE['schulter_servo_links'] = (100,1,-1)  
-#                 Zielzustand.ZIELZUSTAENDE['schulter_servo_rechts'] = (100,1,-1)  
-#                 Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (60,1,0)  
-#                 Zielzustand.ZIELZUSTAENDE['helm_servo'] = (10,1,0)  
-                
+                bewegung.froehlich()
+
             if joy.Y():
                 led.stelle_farbe_ein("orange")
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (20,1,0)
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (20,1,0)  
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_links'] = (20,1,0) 
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_rechts']= (20,1,0)  
-                Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (20,1,0)  
-                Zielzustand.ZIELZUSTAENDE['helm_servo'] = (20,1,0)  
+                bewegung.schuechtern()
+               
                  
             if joy.X():
                 led.stelle_farbe_ein("blau")
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (11,1,0)
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (30,1,0)  
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_links'] = (30,1,0)  
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_rechts'] = (30,1,0)  
-                Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (70,1,0)
-                Zielzustand.ZIELZUSTAENDE['helm_servo'] = (50,1,0)  
+                bewegung.winken()
+                
 
             if joy.leftBumper():
-                led.stelle_farbe_ein("giftgruen")
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (50,1,0)
-                Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (50,1,0) 
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_links'] = (50,1,0)  
-                Zielzustand.ZIELZUSTAENDE['schulter_servo_rechts'] = (50,1,0)  
-                Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (40,1,0)  
-                Zielzustand.ZIELZUSTAENDE['helm_servo'] = (100,1,0)  
-
-
+                led.stelle_farbe_ein("hellrosa")
+                bewegung.kopfschuetteln()
+                
+                 
             if joy.rightTrigger() >= 1:
                 #print(joy.leftBumper())
                 if joy.dpadLeft():
@@ -127,8 +107,6 @@ if __name__=="__main__":
             else: 
                 Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("stopp")
                 
-                
-                
             if joy.rightBumper():
                 if joy.dpadUp():
                     Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("ausfahren")
@@ -136,8 +114,6 @@ if __name__=="__main__":
                     Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("einfahren")
             else:
                 Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("stopp")
-    
-    
     
             if joy.Start():
                 if joy.Back():

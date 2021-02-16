@@ -9,8 +9,7 @@ class Led():
     
     #stoppt vor Herunterfahren alle Leds
     def stop(self):   
-        for i in self.pwm_objekte_led:
-            self.pwm_objekte_led.stop()        
+        gpio.cleanup()       
 
     # Definiert die GPIOs als Ausgänge und initialisiert und startet die Pulsweitenmodulation
     def __setupleds(self, frequenz):  

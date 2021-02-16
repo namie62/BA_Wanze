@@ -49,7 +49,7 @@ MOTOREN_MAX_MIN_PULSDAUER = {
     "schulter_servo_links" : (600, 2300), # Schulterservos können 180°, rotieren aber wegen Übersetzungsverhältnis der Zahnräder einen kleineren Winkel und dadurch langsamer
     "schulter_servo_rechts": (2300, 600),
     "nacken_servo": (600, 2300), 
-    "helm_servo" : (2200,600), }
+    "helm_servo" : (2200,1500), }
 
 SERVO_MODUS = "prozent"
 

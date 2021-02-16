@@ -55,16 +55,16 @@ class Fahrgestell():
         self.in2_links.ChangeDutyCycle(0)
         
     def vorwaerts(self):
-        self.in1_rechts.ChangeDutyCycle(100)
-        self.in2_rechts.ChangeDutyCycle(0)
-        self.in1_links.ChangeDutyCycle(100)
-        self.in2_links.ChangeDutyCycle(0)
-    
-    def rueckwaerts(self):
         self.in1_rechts.ChangeDutyCycle(0)
         self.in2_rechts.ChangeDutyCycle(100)
         self.in1_links.ChangeDutyCycle(0)
         self.in2_links.ChangeDutyCycle(100)
+    
+    def rueckwaerts(self):
+        self.in1_rechts.ChangeDutyCycle(100)
+        self.in2_rechts.ChangeDutyCycle(0)
+        self.in1_links.ChangeDutyCycle(100)
+        self.in2_links.ChangeDutyCycle(0)
         
     def rechtskurve(self):
         self.in1_rechts.ChangeDutyCycle(0)
