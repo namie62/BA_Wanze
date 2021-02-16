@@ -1,6 +1,5 @@
 #-*- coding: utf-8 -*-
 import Zielzustand
-import Emotionen
 from threading import Thread
 from time import sleep
 
@@ -8,8 +7,6 @@ from time import sleep
 # hier kommen die Methoden rein, welche die Standardbewegungsabläufe enthalten
 
 class Bewegungsablaeufe():
-    def __init__(self):
-        self.emotion = Emotionen.Emotion()
     
     def joystick_linker_arm_nach_oben(self):
         Zielzustand.ZIELZUSTAENDE['ellbogen_servo_links'] = (100,1,1)
@@ -38,6 +35,36 @@ class Bewegungsablaeufe():
         
     def joystick_rechter_ellbogen_nach_unten(self):
         Zielzustand.ZIELZUSTAENDE['ellbogen_servo_rechts'] = (0,1,2)
+    
+    def kopf_nach_rechts_neigen(self):
+        Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (60,1,0)
+    
+    def kopf_nach_links_neigen(self):
+        Zielzustand.ZIELZUSTAENDE['nacken_servo'] = (30,1,0)
+    
+    def hals_ausfahren(self):
+        Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("ausfahren")
+    
+    def hals_einfahren(self):
+        Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("einfahren")
+        
+    def hals_stoppen(self):
+        Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("stopp")
+        
+    def vorwaerts_fahren(self):
+        Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("vorwaerts")
+        
+    def rueckwaerts_fahren(self):
+        Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("rueckwaerts")
+        
+    def linkskurve(self):
+        Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("linkskurve_vorwaerts")
+
+    def rechtskurve(self):
+        Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("rechtskurve_vorwaerts")
+    
+    def anhalten(self):
+        Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("stopp")
 
     def froehlich(self):
         for i in range(2):

@@ -86,35 +86,38 @@ if __name__=="__main__":
                 led.stelle_farbe_ein("hellrosa")
                 bewegung.kopfschuetteln()
                 
-                 
+                
             if joy.rightTrigger() >= 1:
-                #print(joy.leftBumper())
                 if joy.dpadLeft():
-                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("linkskurve_vorwaerts")
+                    bewegung.linkskurve()
                     led.stelle_farbe_ein("flieder")
-                    
                 if joy.dpadDown():
-                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("rueckwaerts")
-                    led.stelle_farbe_ein("türkis")
-                    
+                    bewegung.rueckwaerts_fahren()
+                    led.stelle_farbe_ein("türkis") 
                 if joy.dpadRight():
-                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("rechtskurve_vorwaerts")
+                    bewegung.rechtskurve()
                     led.stelle_farbe_ein("orange")    
-                    
                 if joy.dpadUp():
-                    Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("vorwaerts")
+                    bewegung.vorwaerts_fahren()
                     led.stelle_farbe_ein("lila")
             else: 
-                Zielzustand.ZIELZUSTAENDE['fahrgestell'] = ("stopp")
+                bewegung.anhalten()
                 
-            if joy.rightBumper():
+            
+            if joy.leftTrigger():
                 if joy.dpadUp():
-                    Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("ausfahren")
+                    bewegung.hals_ausfahren()
                 if joy.dpadDown():
-                    Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("einfahren")
+                    bewegung.hals_einfahren()
             else:
-                Zielzustand.ZIELZUSTAENDE['schrittmotor'] = ("stopp")
-    
+                bewegung.hals_stoppen()
+            if joy.leftBumper():
+                bewegung.kopf_nach_rechts_neigen()
+            if joy.rightBumper():
+                bewegung.kopf_nach_links_neigen()
+                
+                
+            # Herunterfahren
             if joy.Start():
                 if joy.Back():
                     gpio.cleanup()
