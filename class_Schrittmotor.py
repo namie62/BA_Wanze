@@ -10,10 +10,10 @@ class Schrittmotor():
     def __init__(self):
         #holt sich die Pin-Nummern und Tabelle aus Konstanten.py
         pin_nummern = MOTOREN_und_LED_CHANNELS.get("schrittmotor")
-        self.A = pin_nummern[0] #PIN 21
-        self.B = pin_nummern[1] #PIN 22
-        self.C = pin_nummern[2] #PIN 23
-        self.D = pin_nummern[3] #PIN 24
+        self.A = pin_nummern[0] 
+        self.B = pin_nummern[1]
+        self.C = pin_nummern[2] 
+        self.D = pin_nummern[3] 
         self.table = SCHRITTMOTOR_TABELLE
         
         #legt alle Pins als Outputs fest
@@ -27,9 +27,9 @@ class Schrittmotor():
         #initialisiert und startet für den Schrittmotor einen eigenen Thread
         self.thread = Thread(target = self.__action) 
         self.thread.start()
-
+        
     def __action(self):
-        while gpio.HIGH:
+        while True:
             self.zielzustand = ZIELZUSTAENDE.get("schrittmotor")
             if self.alter_zustand == self.zielzustand: #wenn der alte gleich dem neuen Zustand ist, dann soll sich der Motor nicht bewegen
                 self.default()
@@ -41,7 +41,8 @@ class Schrittmotor():
                 if self.zielzustand == "einfahren":
                     self.zurueck()
             self.alter_zustand == self.zielzustand #der neue Zustand wird zum alten
-         
+            sleep(0.000000001)
+    
     def default(self):
         gpio.output(self.A, gpio.LOW)
         gpio.output(self.B, gpio.LOW)
@@ -50,7 +51,7 @@ class Schrittmotor():
         
     #Kopf ausfahren
     def vorwaerts(self):
-        readfile = open('position.txt', 'r')
+        readfile = open('/home/pi/BA_Wanze/position.txt', 'r')
         position = int(readfile.read())
         readfile.close()
         while position < 2600:
@@ -67,13 +68,13 @@ class Schrittmotor():
                 gpio.output(self.D, gpio.LOW)
                 if(position >=2600):
                     break
-        writefile = open('position.txt', 'w')
+        writefile = open('/home/pi/BA_Wanze/position.txt', 'w')
         writefile.write(str(position))
         writefile.close()        
 
     #Kopf einfahren
     def zurueck(self):
-        readfile = open('position.txt', 'r')
+        readfile = open('/home/pi/BA_Wanze/position.txt', 'r')
         position = int(readfile.read())
         readfile.close()
         while position >=0:
@@ -90,6 +91,6 @@ class Schrittmotor():
                 gpio.output(self.D, gpio.LOW)
                 if position<0:
                     break
-        writefile = open('position.txt', 'w')
+        writefile = open('/home/pi/BA_Wanze/position.txt', 'w')
         writefile.write(str(position))
         writefile.close()

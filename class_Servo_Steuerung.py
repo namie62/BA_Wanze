@@ -19,7 +19,6 @@ class Servo_Adafruit():
         self.thread = Thread(target = self.__action) 
         self.thread.start() 
 
-
     def __ermittle_extremwinkel_und_setze_default_Werte(self):       
         #Welcher Winkel max und welcher min ist, hängt von Einbaurichtung des Motors ab. Reihenfolge im Dic in Konstanten dabei zu beachten: 0 ist 0%/0° und 1 ist 100%/180°
         self.default_dc_nullposition = MOTOREN_MAX_MIN_PULSDAUER.get(self.servoname)[0] # enstspricht defaul_winkel für 0% / 0° 
@@ -110,7 +109,7 @@ class Servo_Adafruit():
             self.__prozentmodus_bewegung_nach_unten()
       
     def __prozentmodus_bewegung_nach_oben(self):
-        self.__beide_Modi_berechne_schritthoehe(self.neuer_zustand,self.alter_zustand)
+        self.__beide_modi_berechne_schritthoehe(self.neuer_zustand,self.alter_zustand)
         ausgangs_position = self.alter_zustand
         for schrittanzahl in range(ZIELZUSTAENDE.get(self.servoname)[1]):
             ausgangs_position += self.schritthoehe
@@ -118,7 +117,7 @@ class Servo_Adafruit():
             self.__set_servo_pulse(dc)
             
     def __prozentmodus_bewegung_nach_unten(self):
-        self.__beide_Modi_berechne_schritthoehe(self.alter_zustand, self.neuer_zustand)
+        self.__beide_modi_berechne_schritthoehe(self.alter_zustand, self.neuer_zustand)
         ausgangs_position = self.alter_zustand 
         for schrittanzahl in range(ZIELZUSTAENDE.get(self.servoname)[1]): 
             ausgangs_position -= self.schritthoehe
@@ -126,7 +125,14 @@ class Servo_Adafruit():
             self.__set_servo_pulse(dc)
                 
     # Sowohl für Gradmodus als auch für Prozentmodus gleich      
-    def __beide_Modi_berechne_schritthoehe(self, groeßere, kleinere):
+    def __beide_modi_berechne_schritthoehe(self, groeßere, kleinere):
         differenz = groeßere - kleinere
         schrittanzahl = ZIELZUSTAENDE.get(self.servoname)[1]
         self.schritthoehe = differenz/schrittanzahl
+
+            
+        
+        
+        
+        
+        

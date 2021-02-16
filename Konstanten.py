@@ -49,7 +49,7 @@ MOTOREN_MAX_MIN_PULSDAUER = {
     "schulter_servo_links" : (600, 2300), # Schulterservos können 180°, rotieren aber wegen Übersetzungsverhältnis der Zahnräder einen kleineren Winkel und dadurch langsamer
     "schulter_servo_rechts": (2300, 600),
     "nacken_servo": (600, 2300), 
-    "helm_servo" : (600,2300), }
+    "helm_servo" : (2200,600), }
 
 SERVO_MODUS = "prozent"
 
@@ -66,9 +66,9 @@ MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt
     "schulter_servo_links" : 0,
     "schulter_servo_rechts": 4,
     "nacken_servo": 12,
-    "helm_servo" : 15,
+    "helm_servo" : 13,
     "fahrgestell" : [21,22,23,32],
-    "schrittmotor" : [11,13,15,19]}
+    "schrittmotor" : [15,16,18,19]}
     
 # Schrittmotor Tabelle
 SCHRITTMOTOR_TABELLE = [[gpio.HIGH,gpio.LOW,gpio.LOW,gpio.LOW],
