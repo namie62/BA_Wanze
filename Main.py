@@ -18,26 +18,37 @@ def allgemeines_setup():
     motorsteuerung = Motorsteuerung()
     return motorsteuerung
 
+def led_blink_signal(led): #damit man sieht, dass Roboter bereit ist nach dem Hochfahren
+    for i in range(2):
+        led.stelle_farbe_ein("blau")
+        sleep(0.5)
+    
+    led.stelle_farbe_ein("gelb")
+        
+
 if __name__=="__main__":
     try:
         joy = xbox.Joystick()
         motorsteuerung = allgemeines_setup()
         led = class_Led.Led()
+
         #class_Schrittmotor.Schrittmotor()
         bewegung = class_Bewegungsablaeufe.Bewegungsablaeufe()
         class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_links", motorsteuerung)
-        
         class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_rechts", motorsteuerung)
         class_Servo_Steuerung.Servo_Adafruit("schulter_servo_links", motorsteuerung)
         class_Servo_Steuerung.Servo_Adafruit("schulter_servo_rechts", motorsteuerung)
         class_Servo_Steuerung.Servo_Adafruit("nacken_servo", motorsteuerung)
         class_Servo_Steuerung.Servo_Adafruit("helm_servo", motorsteuerung)
         class_Fahrgestell.Fahrgestell()
+        
+    
+        bewegung.nullposition(led)
+        led_blink_signal(led)
                                                                  
         while True:
-            if joy.leftTrigger():
-                led.stop()
-                bewegung.nullposition()
+            if joy.Back():
+                bewegung.nullposition(led)
            
             if joy.leftY() > 0:
                 bewegung.joystick_linker_arm_nach_oben()
@@ -63,69 +74,54 @@ if __name__=="__main__":
             if joy.rightX() < 0:
                 bewegung.joystick_rechter_ellbogen_nach_unten()
                 
-
             if joy.A():
-                led.stelle_farbe_ein("gruen")
-                bewegung.angst()
+                bewegung.nullposition(led)
+                bewegung.neugier(led)
                 
             if joy.B():
-                led.stelle_farbe_ein("rot")
-                bewegung.froehlich()
+                bewegung.nullposition(led)
+                bewegung.wut(led)
 
             if joy.Y():
-                led.stelle_farbe_ein("orange")
-                bewegung.schuechtern()
+                bewegung.nullposition(led)
+                bewegung.freude(led)
                
-                 
             if joy.X():
-                led.stelle_farbe_ein("blau")
-                bewegung.winken()
+                bewegung.nullposition(led)
+                bewegung.angst(led)
                 
-
-            if joy.leftBumper():
-                led.stelle_farbe_ein("hellrosa")
-                bewegung.kopfschuetteln()
+                
+#             if joy.leftBumper():
+#                 led.stelle_farbe_ein("hellrosa")
+#                 bewegung.kopfschuetteln()
                 
                 
             if joy.rightTrigger() >= 1:
                 if joy.dpadLeft():
                     bewegung.linkskurve()
-                    led.stelle_farbe_ein("flieder")
                 if joy.dpadDown():
                     bewegung.rueckwaerts_fahren()
-                    led.stelle_farbe_ein("türkis") 
                 if joy.dpadRight():
-                    bewegung.rechtskurve()
-                    led.stelle_farbe_ein("orange")    
+                    bewegung.rechtskurve() 
                 if joy.dpadUp():
                     bewegung.vorwaerts_fahren()
-                    led.stelle_farbe_ein("lila")
             else: 
                 bewegung.anhalten()
                 
             
-            if joy.leftTrigger():
-                if joy.dpadUp():
-                    bewegung.hals_ausfahren()
-                if joy.dpadDown():
-                    bewegung.hals_einfahren()
-            else:
-                bewegung.hals_stoppen()
-            if joy.leftBumper():
-                bewegung.kopf_nach_rechts_neigen()
-            if joy.rightBumper():
-                bewegung.kopf_nach_links_neigen()
+#             if joy.leftBumper():
+#                 bewegung.hals_ausfahren()
+#             if joy.rightBumper():
+#                 bewegung.hals_einfahren()
                 
                 
             # Herunterfahren
-            if joy.Start():
-                if joy.Back():
+            if joy.Start() and joy.Back():
                     gpio.cleanup()
                     shutdown.shutdown()
                 
     
     except KeyboardInterrupt:
-        
        gpio.cleanup()
                 
                 

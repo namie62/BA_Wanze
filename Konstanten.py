@@ -23,7 +23,7 @@ FARBCODES = {
     "hellgruen" : (10,100,10),
     "giftgruen" : (0,100,0),
     "gruen" : (0,100,0),
-    "türkis" : (10,100,30),
+    "tuerkis" : (10,100,30),
     "hellblau" : (20,30,100),
     "blau" : (0,0,100),
     "lila" : (100,0,100),
@@ -32,7 +32,18 @@ FARBCODES = {
     "pink" : (100,0,60),
     "rot" : (100,0,0),
     "orange" : (100,20,0),
-    "gelb" : (100,50,0)
+    "gelb" : (100,50,0),
+    "aus" : (0,0,0),
+    "gruendimmung1" : (0,10,0),
+    "gruendimmung2" : (0,20,0),
+    "gruendimmung3" : (0,30,0),
+    "gruendimmung4" : (0,40,0),
+    "gruendimmung5" : (0,50,0),
+    "gruendimmung6" : (0,60,0),
+    "gruendimmung7" : (0,70,0),
+    "gruendimmung8" : (0,80,0),
+    "gruendimmung9" : (0,90,0),
+    "gruendimmung10" : (0,100,0)
     }
 
 #Fahrgestell
@@ -70,6 +81,7 @@ MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt
     "fahrgestell" : [21,22,23,32],
     "schrittmotor" : [15,16,18,19]}
     
+SCHRITTMOTOR_MAXPOS = 2400
 # Schrittmotor Tabelle
 SCHRITTMOTOR_TABELLE = [[gpio.HIGH,gpio.LOW,gpio.LOW,gpio.LOW],
          [gpio.HIGH,gpio.HIGH,gpio.LOW,gpio.LOW],

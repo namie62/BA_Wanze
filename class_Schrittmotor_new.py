@@ -8,29 +8,24 @@ from Konstanten import MOTOREN_und_LED_CHANNELS, SCHRITTMOTOR_TABELLE, SCHRITTMO
 
 class Schrittmotor():
     def __init__(self):
-        
         #holt sich die Pin-Nummern und Tabelle aus Konstanten.py
         pin_nummern = MOTOREN_und_LED_CHANNELS.get("schrittmotor")
         
         self.A = pin_nummern[0] 
         self.B = pin_nummern[1]
         self.C = pin_nummern[2] 
-        self.D = pin_nummern[3]
-        
+        self.D = pin_nummern[3] 
+        self.table = SCHRITTMOTOR_TABELLE
         gpio.setmode(gpio.BOARD)
         
-        gpio.setup(self.A, gpio.OUT)
-        gpio.setup(self.B, gpio.OUT)
-        gpio.setup(self.C, gpio.OUT)
-        gpio.setup(self.D, gpio.OUT)
-        self.table = SCHRITTMOTOR_TABELLE
+        #legt alle Pins als Outputs fest
+        for i in range(len(MOTOREN_und_LED_CHANNELS.get("schrittmotor"))):
+            gpio.setup(MOTOREN_und_LED_CHANNELS.get("schrittmotor")[i], gpio.OUT)
         
-        
-                
             
         self.default() #einmal alle auf gpio.LOW setzen zu Beginn, damit der Motor nichts tut von Beginn an
         self.alter_zustand = ZIELZUSTAENDE.get("schrittmotor") #legt initial den eben gesetzten default-Zustand als alten Zustand an
-        self.time = 0.001 #legt Geschwindigkeit der Signale an Schrittmotor fest
+        self.time = 0.0005 #legt Geschwindigkeit der Signale an Schrittmotor fest
         
         #initialisiert und startet für den Schrittmotor einen eigenen Thread
         self.thread = Thread(target = self.__action) 
@@ -38,6 +33,11 @@ class Schrittmotor():
         
         
     def __action(self):
+        gpio.setmode(gpio.BOARD)
+        
+        #legt alle Pins als Outputs fest
+        for i in range(len(MOTOREN_und_LED_CHANNELS.get("schrittmotor"))):
+            gpio.setup(MOTOREN_und_LED_CHANNELS.get("schrittmotor")[i], gpio.OUT)
         while True:
             self.zielzustand = ZIELZUSTAENDE.get("schrittmotor")
             if self.alter_zustand == self.zielzustand: #wenn der alte gleich dem neuen Zustand ist, dann soll sich der Motor nicht bewegen
@@ -60,6 +60,11 @@ class Schrittmotor():
         
     #Kopf ausfahren
     def vorwaerts(self):
+        gpio.setmode(gpio.BOARD)
+        
+        #legt alle Pins als Outputs fest
+        for i in range(len(MOTOREN_und_LED_CHANNELS.get("schrittmotor"))):
+            gpio.setup(MOTOREN_und_LED_CHANNELS.get("schrittmotor")[i], gpio.OUT)
         readfile = open('/home/pi/BA_Wanze/position.txt', 'r')
         position = int(readfile.read())
         readfile.close()
@@ -85,6 +90,11 @@ class Schrittmotor():
 
     #Kopf einfahren
     def zurueck(self):
+        gpio.setmode(gpio.BOARD)
+        
+        #legt alle Pins als Outputs fest
+        for i in range(len(MOTOREN_und_LED_CHANNELS.get("schrittmotor"))):
+            gpio.setup(MOTOREN_und_LED_CHANNELS.get("schrittmotor")[i], gpio.OUT)
         readfile = open('/home/pi/BA_Wanze/position.txt', 'r')
         position = int(readfile.read())
         readfile.close()
