@@ -81,7 +81,6 @@ MOTOREN_und_LED_CHANNELS = {  #Adafruit Motopi hat sogenannte Channel (insgesamt
     "fahrgestell" : [21,22,23,32],
     "schrittmotor" : [15,16,18,19]}
     
-SCHRITTMOTOR_MAXPOS = 2400
 # Schrittmotor Tabelle
 SCHRITTMOTOR_TABELLE = [[gpio.HIGH,gpio.LOW,gpio.LOW,gpio.LOW],
          [gpio.HIGH,gpio.HIGH,gpio.LOW,gpio.LOW],
@@ -91,3 +90,5 @@ SCHRITTMOTOR_TABELLE = [[gpio.HIGH,gpio.LOW,gpio.LOW,gpio.LOW],
          [gpio.LOW,gpio.LOW,gpio.HIGH,gpio.HIGH],
          [gpio.LOW,gpio.LOW,gpio.LOW,gpio.HIGH],
          [gpio.HIGH,gpio.LOW,gpio.LOW,gpio.HIGH]]
+
+TASTER = 40

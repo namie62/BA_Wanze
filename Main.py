@@ -22,17 +22,16 @@ def led_blink_signal(led): #damit man sieht, dass Roboter bereit ist nach dem Ho
     for i in range(2):
         led.stelle_farbe_ein("blau")
         sleep(0.5)
-    
     led.stelle_farbe_ein("gelb")
+    
         
-
 if __name__=="__main__":
     try:
         joy = xbox.Joystick()
         motorsteuerung = allgemeines_setup()
         led = class_Led.Led()
 
-        #class_Schrittmotor.Schrittmotor()
+        class_Schrittmotor.Schrittmotor()
         bewegung = class_Bewegungsablaeufe.Bewegungsablaeufe()
         class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_links", motorsteuerung)
         class_Servo_Steuerung.Servo_Adafruit("ellbogen_servo_rechts", motorsteuerung)
@@ -91,11 +90,6 @@ if __name__=="__main__":
                 bewegung.angst(led)
                 
                 
-#             if joy.leftBumper():
-#                 led.stelle_farbe_ein("hellrosa")
-#                 bewegung.kopfschuetteln()
-                
-                
             if joy.rightTrigger() >= 1:
                 if joy.dpadLeft():
                     bewegung.linkskurve()
@@ -109,10 +103,10 @@ if __name__=="__main__":
                 bewegung.anhalten()
                 
             
-#             if joy.leftBumper():
-#                 bewegung.hals_ausfahren()
-#             if joy.rightBumper():
-#                 bewegung.hals_einfahren()
+            if joy.leftBumper():
+                bewegung.hals_ausfahren()
+            if joy.rightBumper():
+                bewegung.hals_einfahren()
                 
                 
             # Herunterfahren
@@ -123,8 +117,3 @@ if __name__=="__main__":
     
     except KeyboardInterrupt:
        gpio.cleanup()
-                
-                
-            
-
-        

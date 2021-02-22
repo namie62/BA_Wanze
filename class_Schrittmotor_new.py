@@ -65,11 +65,7 @@ class Schrittmotor():
         #legt alle Pins als Outputs fest
         for i in range(len(MOTOREN_und_LED_CHANNELS.get("schrittmotor"))):
             gpio.setup(MOTOREN_und_LED_CHANNELS.get("schrittmotor")[i], gpio.OUT)
-        readfile = open('/home/pi/BA_Wanze/position.txt', 'r')
-        position = int(readfile.read())
-        readfile.close()
-        print('1')
-        while position < SCHRITTMOTOR_MAXPOS:
+        for i in range(225):
             print('2')
             for j in range(7,-1,-1):
                 gpio.output(self.A, self.table[j][0])
@@ -77,16 +73,7 @@ class Schrittmotor():
                 gpio.output(self.C, self.table[j][2])
                 gpio.output(self.D, self.table[j][3])
                 sleep(self.time)
-                position += 1
-                gpio.output(self.A, gpio.LOW)
-                gpio.output(self.B, gpio.LOW)
-                gpio.output(self.C, gpio.LOW)
-                gpio.output(self.D, gpio.LOW)
-                if(position >=SCHRITTMOTOR_MAXPOS):
-                    break
-        writefile = open('/home/pi/BA_Wanze/position.txt', 'w')
-        writefile.write(str(position))
-        writefile.close()        
+                self.default()   
 
     #Kopf einfahren
     def zurueck(self):
@@ -95,11 +82,7 @@ class Schrittmotor():
         #legt alle Pins als Outputs fest
         for i in range(len(MOTOREN_und_LED_CHANNELS.get("schrittmotor"))):
             gpio.setup(MOTOREN_und_LED_CHANNELS.get("schrittmotor")[i], gpio.OUT)
-        readfile = open('/home/pi/BA_Wanze/position.txt', 'r')
-        position = int(readfile.read())
-        readfile.close()
-        print('3')
-        while position >=0:
+        for i in range(225):
             gpio.setmode(gpio.BOARD)
             print('4')
             for j in range(8):
@@ -108,13 +91,4 @@ class Schrittmotor():
                 gpio.output(self.C, self.table[j][2])
                 gpio.output(self.D, self.table[j][3])
                 sleep(self.time)
-                position -= 1
-                gpio.output(self.A, gpio.LOW)
-                gpio.output(self.B, gpio.LOW)
-                gpio.output(self.C, gpio.LOW)
-                gpio.output(self.D, gpio.LOW)
-                if position<0:
-                    break
-        writefile = open('/home/pi/BA_Wanze/position.txt', 'w')
-        writefile.write(str(position))
-        writefile.close()
+                self.default()
